@@ -21,7 +21,12 @@
                     @forelse ($payments as $payment)
                         <tr>
                             <td class="px-5 py-4 font-medium">{{ $payment->course->title }}</td>
-                            <td class="px-5 py-4 text-zinc-600">{{ ucfirst($payment->method) }}</td>
+                            <td class="px-5 py-4 text-zinc-600">
+                                {{ ucfirst($payment->method) }}
+                                @if ($payment->is_condoned)
+                                    <span class="ml-2 rounded-md bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Condonado</span>
+                                @endif
+                            </td>
                             <td class="px-5 py-4 text-zinc-600">{{ $payment->reference ?? 'Sin referencia' }}</td>
                             <td class="max-w-64 truncate px-5 py-4 font-mono text-xs text-zinc-500" title="{{ $payment->unica }}">{{ $payment->unica ?? 'Sin clave' }}</td>
                             <td class="px-5 py-4 text-zinc-600">{{ optional($payment->paid_at)->format('d/m/Y') ?? $payment->created_at->format('d/m/Y') }}</td>

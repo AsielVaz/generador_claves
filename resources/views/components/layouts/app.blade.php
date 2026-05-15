@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $title ?? config('app.name', 'Academia') }}</title>
+    <title>{{ $title ? $title.' | Cryptoefectivo' : config('app.name', 'Cryptoefectivo') }}</title>
     @fonts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -15,9 +15,11 @@
             <aside class="border-b border-zinc-200 bg-white lg:fixed lg:inset-y-0 lg:left-0 lg:w-72 lg:border-b-0 lg:border-r">
                 <div class="flex h-full flex-col px-5 py-5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-                        <span class="grid size-10 place-items-center rounded-lg bg-emerald-700 text-sm font-bold text-white">AC</span>
+                        <span class="flex h-12 w-16 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white">
+                            <img src="{{ Vite::asset('resources/logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-1">
+                        </span>
                         <span>
-                            <span class="block text-sm font-semibold">Academia</span>
+                            <span class="block text-sm font-semibold">Cryptoefectivo</span>
                             <span class="block text-xs text-zinc-500">Panel de cursos</span>
                         </span>
                     </a>
@@ -27,6 +29,12 @@
                         <a href="{{ route('courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.index') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos</a>
                         <a href="{{ route('courses.mine') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.mine', 'courses.show') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Mis cursos</a>
                         <a href="{{ route('payments.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('payments.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Pagos</a>
+                        @if (auth()->user()->is_admin)
+                            <a href="{{ route('admin.users.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Usuarios</a>
+                            <a href="{{ route('admin.courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos admin</a>
+                            <a href="{{ route('admin.condonations.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.condonations.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Condonaciones</a>
+                            <a href="{{ route('admin.reports.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Reportes</a>
+                        @endif
                     </nav>
 
                     <div class="mt-auto hidden border-t border-zinc-200 pt-5 lg:block">
@@ -46,7 +54,7 @@
                 <header class="border-b border-zinc-200 bg-white">
                     <div class="flex items-center justify-between px-5 py-4 sm:px-8">
                         <div>
-                            <p class="text-xs font-semibold uppercase text-emerald-700">Plataforma academica</p>
+                            <p class="text-xs font-semibold uppercase text-emerald-700">Cryptoefectivo</p>
                             <h1 class="mt-1 text-2xl font-semibold tracking-normal">{{ $heading ?? 'Dashboard' }}</h1>
                         </div>
                         <form method="POST" action="{{ route('logout') }}" class="lg:hidden">
@@ -67,6 +75,12 @@
                 @if ($errors->has('course'))
                     <div class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                         {{ $errors->first('course') }}
+                    </div>
+                @endif
+
+                @if ($errors->has('admin') || $errors->has('condonation'))
+                    <div class="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                        {{ $errors->first('admin') ?: $errors->first('condonation') }}
                     </div>
                 @endif
 

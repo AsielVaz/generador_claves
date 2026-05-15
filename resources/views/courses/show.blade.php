@@ -12,6 +12,8 @@
                 <p class="mt-2 text-2xl font-semibold">${{ number_format($paidTotal, 2) }}</p>
                 <p class="mt-4 text-sm text-zinc-500">Duracion</p>
                 <p class="mt-1 font-semibold">{{ $course->duration_hours }} horas</p>
+                <p class="mt-4 text-sm text-zinc-500">Costo del curso</p>
+                <p class="mt-1 font-semibold">${{ number_format($course->course_cost ?: $course->price, 2) }}</p>
             </div>
         </div>
 

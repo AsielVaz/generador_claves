@@ -14,7 +14,7 @@
                 <div class="mt-5 flex items-center justify-between border-t border-zinc-100 pt-4">
                     <div>
                         <p class="text-xs text-zinc-500">Precio</p>
-                        <p class="text-lg font-semibold">${{ number_format($course->price, 2) }}</p>
+                        <p class="text-lg font-semibold">${{ number_format($course->course_cost ?: $course->price, 2) }}</p>
                     </div>
                     @if ($isEnrolled)
                         <span class="rounded-md bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Registrado</span>

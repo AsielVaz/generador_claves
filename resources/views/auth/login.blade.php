@@ -2,9 +2,11 @@
     <div class="grid min-h-screen place-items-center px-5 py-10">
         <div class="w-full max-w-md rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
             <div class="mb-8">
-                <div class="grid size-11 place-items-center rounded-lg bg-emerald-700 text-sm font-bold text-white">AC</div>
+                <div class="flex h-20 w-32 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white">
+                    <img src="{{ Vite::asset('resources/logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-2">
+                </div>
                 <h1 class="mt-5 text-2xl font-semibold">Iniciar sesion</h1>
-                <p class="mt-2 text-sm text-zinc-500">Accede a tu panel de cursos y pagos.</p>
+                <p class="mt-2 text-sm text-zinc-500">Accede a Cryptoefectivo.</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}" class="space-y-5">

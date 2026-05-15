@@ -18,6 +18,7 @@ class Payment extends Model
         'status',
         'reference',
         'unica',
+        'is_condoned',
         'paid_at',
     ];
 
@@ -25,6 +26,7 @@ class Payment extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'is_condoned' => 'boolean',
             'paid_at' => 'date',
         ];
     }

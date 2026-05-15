@@ -15,6 +15,12 @@ class Course extends Model
         'title',
         'slug',
         'description',
+        'start_date',
+        'end_date',
+        'payment_start_date',
+        'payment_end_date',
+        'minimum_payment',
+        'course_cost',
         'price',
         'duration_hours',
         'is_active',
@@ -24,6 +30,12 @@ class Course extends Model
     {
         return [
             'price' => 'decimal:2',
+            'minimum_payment' => 'decimal:2',
+            'course_cost' => 'decimal:2',
+            'start_date' => 'date',
+            'end_date' => 'date',
+            'payment_start_date' => 'date',
+            'payment_end_date' => 'date',
             'is_active' => 'boolean',
         ];
     }

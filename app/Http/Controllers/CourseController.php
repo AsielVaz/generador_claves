@@ -35,6 +35,8 @@ class CourseController extends Controller
 
     public function myCourses(Request $request): View
     {
+        $today = now()->toDateString();
+
         $courses = $request->user()
             ->courses()
             ->withSum(['payments as paid_total' => function ($query) use ($request) {
@@ -44,7 +46,7 @@ class CourseController extends Controller
             ->orderBy('title')
             ->get();
 
-        return view('courses.mine', compact('courses'));
+        return view('courses.mine', compact('courses', 'today'));
     }
 
     public function show(Request $request, Course $course): View|RedirectResponse
@@ -65,10 +67,14 @@ class CourseController extends Controller
             ->where('status', 'paid')
             ->sum('amount');
 
-        if ($paidTotal < $course->price) {
+        $minimumPayment = (float) $course->minimum_payment;
+        $courseCost = (float) ($course->course_cost ?: $course->price);
+        $paymentPeriodEnded = $course->payment_end_date && now()->toDateString() > $course->payment_end_date->toDateString();
+
+        if ($paidTotal < $minimumPayment || ($paymentPeriodEnded && $paidTotal < $courseCost)) {
             return redirect()
                 ->route('courses.mine')
-                ->withErrors(['course' => 'Completa el pago total del curso para desbloquearlo.']);
+                ->withErrors(['course' => 'El curso esta bloqueado por reglas de pago.']);
         }
 
         return view('courses.show', compact('course', 'paidTotal'));

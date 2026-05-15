@@ -42,6 +42,21 @@ class PaymentController extends Controller
             'payment_file' => ['required', 'file', 'max:1024'],
         ]);
 
+        $course = Course::findOrFail($validated['course_id']);
+        $today = now()->toDateString();
+
+        if (! $course->payment_start_date || ! $course->payment_end_date) {
+            return back()
+                ->withErrors(['course_id' => 'Este curso aun no tiene un periodo de pago configurado.'])
+                ->withInput();
+        }
+
+        if ($today < $course->payment_start_date->toDateString() || $today > $course->payment_end_date->toDateString()) {
+            return back()
+                ->withErrors(['course_id' => 'Solo puedes cargar pagos dentro del periodo permitido del curso.'])
+                ->withInput();
+        }
+
         $file = $request->file('payment_file');
 
         if (strtolower($file->getClientOriginalExtension()) !== '10hf') {

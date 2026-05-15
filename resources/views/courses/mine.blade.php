@@ -3,9 +3,11 @@
         @forelse ($courses as $course)
             @php
                 $paidTotal = (float) ($course->paid_total ?? 0);
-                $price = (float) $course->price;
-                $isUnlocked = $paidTotal >= $price;
-                $progress = $price > 0 ? min(100, round(($paidTotal / $price) * 100)) : 100;
+                $minimumPayment = (float) $course->minimum_payment;
+                $courseCost = (float) ($course->course_cost ?: $course->price);
+                $paymentPeriodEnded = $course->payment_end_date && $today > $course->payment_end_date->toDateString();
+                $isUnlocked = $paidTotal >= $minimumPayment && (! $paymentPeriodEnded || $paidTotal >= $courseCost);
+                $progress = $courseCost > 0 ? min(100, round(($paidTotal / $courseCost) * 100)) : 100;
             @endphp
 
             <article class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
@@ -22,7 +24,7 @@
                 <div class="mt-5">
                     <div class="mb-2 flex items-center justify-between text-sm">
                         <span class="font-medium text-zinc-600">Pagado</span>
-                        <span class="font-semibold">${{ number_format($paidTotal, 2) }} / ${{ number_format($price, 2) }}</span>
+                        <span class="font-semibold">${{ number_format($paidTotal, 2) }} / ${{ number_format($courseCost, 2) }}</span>
                     </div>
                     <div class="h-2 overflow-hidden rounded-full bg-zinc-100">
                         <div class="h-full rounded-full {{ $isUnlocked ? 'bg-emerald-700' : 'bg-amber-500' }}" style="width: {{ $progress }}%"></div>
@@ -30,7 +32,12 @@
                 </div>
 
                 <div class="mt-5 flex items-center justify-between border-t border-zinc-100 pt-4">
-                    <p class="text-sm text-zinc-500">{{ $course->duration_hours }} horas de contenido</p>
+                    <p class="text-sm text-zinc-500">
+                        Minimo: ${{ number_format($minimumPayment, 2) }}
+                        @if ($paymentPeriodEnded && $paidTotal < $courseCost)
+                            · Periodo de pago vencido
+                        @endif
+                    </p>
 
                     @if ($isUnlocked)
                         <a href="{{ route('courses.show', $course) }}" class="rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800">Ver curso</a>
