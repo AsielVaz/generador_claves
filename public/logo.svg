@@ -1,0 +1,60 @@
+<svg width="100%" viewBox="0 0 680 420" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+  <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Crypto Efectivo — Logotipo</title>
+  <desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Logotipo de Crypto Efectivo, empresa de manejo de efectivo encriptado</desc>
+  <defs>
+    
+    <clipPath id="hex-clip">
+      <path d="M340 60 L400 93 L400 160 L340 193 L280 160 L280 93 Z"/>
+    </clipPath>
+  </defs>
+  <!-- Hexágono exterior decorativo (anillo) -->
+  <polygon points="340,58 412,99 412,181 340,222 268,181 268,99" fill="none" stroke="#5891C7" stroke-width="2.5" opacity="0.3" style="fill:none;stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:2.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Hexágono mediano -->
+  <polygon points="340,72 398,106 398,174 340,208 282,174 282,106" fill="none" stroke="#5891C7" stroke-width="1.5" opacity="0.6" style="fill:none;stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Hexágono principal relleno -->
+  <polygon points="340,86 386,113 386,167 340,194 294,167 294,113" fill="#5891C7" opacity="0.12" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.12;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <polygon points="340,86 386,113 386,167 340,194 294,167 294,113" fill="none" stroke="#5891C7" stroke-width="2" style="fill:none;stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Símbolo central: candado + signo de peso estilizados -->
+  <!-- Cuerpo del candado -->
+  <rect x="322" y="136" width="36" height="28" rx="5" fill="#5891C7" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Arco del candado -->
+  <path d="M328 136 L328 124 Q340 112 352 124 L352 136" fill="none" stroke="#5891C7" stroke-width="3.5" stroke-linecap="round" style="fill:none;stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Signo $ en el candado -->
+  <text x="340" y="155" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="13" font-weight="600" fill="#0D1B2A" style="fill:rgb(13, 27, 42);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;IBM Plex Mono&quot;, monospace;font-size:13px;font-weight:600;text-anchor:middle;dominant-baseline:auto">$</text>
+
+  <!-- Líneas de circuito decorativas saliendo del hex -->
+  <!-- Izquierda -->
+  <line x1="268" y1="140" x2="220" y2="140" stroke="#5891C7" stroke-width="1" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="218" cy="140" r="3" fill="#5891C7" opacity="0.5" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="206" cy="140" r="2" fill="#5891C7" opacity="0.3" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Derecha -->
+  <line x1="412" y1="140" x2="460" y2="140" stroke="#5891C7" stroke-width="1" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="462" cy="140" r="3" fill="#5891C7" opacity="0.5" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="474" cy="140" r="2" fill="#5891C7" opacity="0.3" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Inferior izquierda -->
+  <line x1="294" y1="180" x2="244" y2="200" stroke="#5891C7" stroke-width="1" opacity="0.35" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.35;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="242" cy="201" r="2.5" fill="#5891C7" opacity="0.35" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.35;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <!-- Inferior derecha -->
+  <line x1="386" y1="180" x2="436" y2="200" stroke="#5891C7" stroke-width="1" opacity="0.35" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.35;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <circle cx="438" cy="201" r="2.5" fill="#5891C7" opacity="0.35" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.35;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Nombre: CRYPTO -->
+  <text x="340" y="252" text-anchor="middle" font-family="'Space Grotesk', 'IBM Plex Mono', monospace" font-size="38" font-weight="700" letter-spacing="8" fill="#5891C7" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Space Grotesk&quot;, &quot;IBM Plex Mono&quot;, monospace;font-size:38px;font-weight:700;text-anchor:middle;dominant-baseline:auto">CRYPTO</text>
+
+  <!-- Separador decorativo -->
+  <line x1="220" y1="266" x2="305" y2="266" stroke="#5891C7" stroke-width="0.75" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:0.75px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <rect x="320" y="261" width="40" height="10" rx="2" fill="#5891C7" opacity="0.15" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+  <line x1="375" y1="266" x2="460" y2="266" stroke="#5891C7" stroke-width="0.75" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:0.75px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Nombre: EFECTIVO -->
+  <text x="340" y="310" text-anchor="middle" font-family="'Space Grotesk', 'IBM Plex Mono', monospace" font-size="28" font-weight="400" letter-spacing="10" fill="#FFFFFF" opacity="0.85" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.85;font-family:&quot;Space Grotesk&quot;, &quot;IBM Plex Mono&quot;, monospace;font-size:28px;font-weight:400;text-anchor:middle;dominant-baseline:auto">EFECTIVO</text>
+
+  <!-- Tagline -->
+  <text x="340" y="348" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="10" font-weight="400" letter-spacing="2.5" fill="#5891C7" opacity="0.7" style="fill:rgb(88, 145, 199);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.7;font-family:&quot;IBM Plex Mono&quot;, monospace;font-size:10px;font-weight:400;text-anchor:middle;dominant-baseline:auto">EFECTIVO ENCRIPTADO · SEGURO · CONFIABLE</text>
+
+  <!-- Línea base decorativa -->
+  <line x1="240" y1="363" x2="440" y2="363" stroke="#5891C7" stroke-width="0.5" opacity="0.25" style="fill:rgb(0, 0, 0);stroke:rgb(88, 145, 199);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.25;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+</svg>

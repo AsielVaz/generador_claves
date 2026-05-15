@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ? $title.' | Cryptoefectivo' : config('app.name', 'Cryptoefectivo') }}</title>
     @fonts
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
 </head>
 <body class="min-h-screen bg-zinc-100 text-zinc-950 antialiased">
     <div class="min-h-screen lg:flex">
@@ -16,7 +18,7 @@
                 <div class="flex h-full flex-col px-5 py-5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
                         <span class="flex h-12 w-16 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white">
-                            <img src="{{ Vite::asset('resources/logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-1">
+                            <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-1">
                         </span>
                         <span>
                             <span class="block text-sm font-semibold">Cryptoefectivo</span>

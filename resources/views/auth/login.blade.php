@@ -3,7 +3,7 @@
         <div class="w-full max-w-md rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
             <div class="mb-8">
                 <div class="flex h-20 w-32 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white">
-                    <img src="{{ Vite::asset('resources/logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-2">
+                    <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-2">
                 </div>
                 <h1 class="mt-5 text-2xl font-semibold">Iniciar sesion</h1>
                 <p class="mt-2 text-sm text-zinc-500">Accede a Cryptoefectivo.</p>
