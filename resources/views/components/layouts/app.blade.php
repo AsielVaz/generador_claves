@@ -9,6 +9,9 @@
     @fonts
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 </head>
 <body class="min-h-screen bg-zinc-100 text-zinc-950 antialiased">
