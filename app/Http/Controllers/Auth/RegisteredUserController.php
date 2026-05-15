@@ -40,6 +40,8 @@ class RegisteredUserController extends Controller
             'password' => $validated['password'],
         ]);
 
+        enviarCorreoBienvenida($user->email, $user->name);
+
         Auth::login($user);
 
         return redirect()->route('dashboard');

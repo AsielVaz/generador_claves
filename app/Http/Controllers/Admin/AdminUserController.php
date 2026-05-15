@@ -41,12 +41,14 @@ class AdminUserController extends Controller
                 ->withInput();
         }
 
-        User::create([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $email,
             'password' => $validated['password'],
             'is_admin' => $request->boolean('is_admin'),
         ]);
+
+        enviarCorreoBienvenida($user->email, $user->name);
 
         return redirect()
             ->route('admin.users.index')
