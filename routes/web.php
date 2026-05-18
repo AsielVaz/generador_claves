@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -38,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pagos', [PaymentController::class, 'store'])->name('payments.store');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::redirect('/', '/admin/usuarios')->name('dashboard');
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
 
         Route::get('/usuarios', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/usuarios/nuevo', [AdminUserController::class, 'create'])->name('users.create');

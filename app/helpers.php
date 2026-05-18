@@ -5,8 +5,14 @@ use Illuminate\Support\Facades\Log;
 if (! function_exists('enviarMailChimpCorreo')) {
     function enviarMailChimpCorreo($email, $nombre, $asunto, $mensaje, $attachment = [], $attachment_name = [], $mail_oculto = [], $correo_origen = '')
     {
-        $apiKey = env('MANDRILL_API_KEY', 'md-N-ItQ7kjJI47Vv3jmGH5-A');
+        $apiKey = env('KEY_MAIL');
         $correo_origen = $correo_origen ?: 'demo@sistema14.org';
+
+        if (empty($apiKey)) {
+            Log::warning('No se pudo enviar correo: KEY_MAIL no esta configurada.');
+
+            return json_encode(['status' => 'error', 'message' => 'KEY_MAIL no esta configurada'], JSON_UNESCAPED_UNICODE);
+        }
 
         $adjuntos = [];
         foreach ($attachment as $key => $value) {

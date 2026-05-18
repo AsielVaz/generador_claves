@@ -30,11 +30,12 @@
                     </a>
 
                     <nav class="mt-6 flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
-                        <a href="{{ route('dashboard') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Dashboard</a>
-                        <a href="{{ route('courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.index') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos</a>
-                        <a href="{{ route('courses.mine') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.mine', 'courses.show') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Mis cursos</a>
-                        <a href="{{ route('payments.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('payments.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Pagos</a>
-                        @if (auth()->user()->is_admin)
+                        <a href="{{ auth()->user()->is_admin ? route('admin.dashboard') : route('dashboard') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('dashboard', 'admin.dashboard') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Dashboard</a>
+                        @if (! auth()->user()->is_admin)
+                            <a href="{{ route('courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.index') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos</a>
+                            <a href="{{ route('courses.mine') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('courses.mine', 'courses.show') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Mis cursos</a>
+                            <a href="{{ route('payments.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('payments.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Pagos</a>
+                        @else
                             <a href="{{ route('admin.users.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Usuarios</a>
                             <a href="{{ route('admin.courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos admin</a>
                             <a href="{{ route('admin.condonations.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.condonations.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Condonaciones</a>

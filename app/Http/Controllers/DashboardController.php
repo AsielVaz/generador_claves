@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Payment;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request): RedirectResponse|View
     {
         $user = $request->user();
+
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard');
+        }
 
         $enrolledCourses = $user->courses()
             ->latest('course_user.enrolled_at')
