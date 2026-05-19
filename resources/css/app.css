@@ -218,6 +218,6 @@
     .glass-app .border-r,
     .glass-app .divide-zinc-100 > :not(:last-child),
     .glass-app .divide-zinc-200 > :not(:last-child) {
-        border-color: rgba(255, 255, 255, 0.42);
+        border-color: rgba(45, 212, 191, 0.14);
     }
 }

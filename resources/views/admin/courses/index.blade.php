@@ -30,7 +30,10 @@
                             </td>
                             <td class="px-5 py-4 font-semibold">{{ $course->users_count }}</td>
                             <td class="px-5 py-4 text-right">
-                                <a href="{{ route('admin.courses.edit', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Editar</a>
+                                <div class="flex justify-end gap-2">
+                                    <a href="{{ route('admin.courses.show', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Ver detalles</a>
+                                    <a href="{{ route('admin.courses.edit', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Editar</a>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

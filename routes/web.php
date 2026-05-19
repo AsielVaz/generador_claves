@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/cursos', [AdminCourseController::class, 'index'])->name('courses.index');
         Route::get('/cursos/nuevo', [AdminCourseController::class, 'create'])->name('courses.create');
         Route::post('/cursos', [AdminCourseController::class, 'store'])->name('courses.store');
+        Route::get('/cursos/{course}/detalles', [AdminCourseController::class, 'show'])->name('courses.show');
+        Route::get('/cursos/{course}/inscritos/excel', [AdminCourseController::class, 'export'])->name('courses.export');
         Route::get('/cursos/{course}/editar', [AdminCourseController::class, 'edit'])->name('courses.edit');
         Route::put('/cursos/{course}', [AdminCourseController::class, 'update'])->name('courses.update');
 

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
 class AdminCourseController extends Controller
@@ -63,6 +66,33 @@ class AdminCourseController extends Controller
         return view('admin.courses.edit', compact('course'));
     }
 
+    public function show(Course $course): View
+    {
+        $course->load(['users' => fn ($query) => $query->orderBy('name')]);
+
+        return view('admin.courses.show', [
+            'course' => $course,
+            'rows' => $this->enrollmentRows($course),
+        ]);
+    }
+
+    public function export(Course $course): StreamedResponse
+    {
+        $course->load(['users' => fn ($query) => $query->orderBy('name')]);
+
+        $filename = 'inscritos_'.$course->slug.'_'.now()->format('Ymd_His').'.xls';
+        $rows = $this->enrollmentRows($course);
+
+        return response()->streamDownload(function () use ($course, $rows) {
+            echo view('admin.courses.export', [
+                'course' => $course,
+                'rows' => $rows,
+            ])->render();
+        }, $filename, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+        ]);
+    }
+
     public function update(Request $request, Course $course): RedirectResponse
     {
         $validated = $request->validate([
@@ -96,5 +126,26 @@ class AdminCourseController extends Controller
         return redirect()
             ->route('admin.courses.index')
             ->with('status', 'Curso actualizado correctamente.');
+    }
+
+    private function enrollmentRows(Course $course): Collection
+    {
+        $courseCost = (float) ($course->course_cost ?: $course->price);
+
+        return $course->users->map(function ($user) use ($course, $courseCost) {
+            $paidTotal = (float) Payment::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->where('status', 'paid')
+                ->sum('amount');
+
+            return [
+                'user' => $user,
+                'enrolled_at' => $user->pivot->enrolled_at,
+                'paid_total' => $paidTotal,
+                'remaining' => max(0, $courseCost - $paidTotal),
+                'course_cost' => $courseCost,
+                'status' => $paidTotal >= $courseCost ? 'Pagado' : 'Pendiente',
+            ];
+        });
     }
 }
