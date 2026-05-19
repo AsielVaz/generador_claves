@@ -35,6 +35,18 @@ function generarHashUnico() {
     return hash('sha256', $base);
 }
 
+function encriptar($cadena) {
+    $clave = "Encr10h-.$=2023SecretoMuajaaja";
+    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    $encriptado = openssl_encrypt($cadena, 'aes-256-cbc', $clave, 0, $iv);
+
+    if ($iv === false || $encriptado === false) {
+        return false;
+    }
+
+    return base64_encode($iv . $encriptado);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $amount     = limpiar($_POST['amount']);
     $method     = limpiar($_POST['method']);
@@ -68,15 +80,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die('Error al generar el JSON.');
     }
 
+    $contenidoArchivo = encriptar($json);
+
+    if ($contenidoArchivo === false) {
+        die('Error al encriptar el JSON.');
+    }
+
     $nombreArchivo = 'payment_' . date('Ymd_His') . '.10hf';
 
     header('Content-Type: text/plain; charset=UTF-8');
     header('Content-Disposition: attachment; filename="' . $nombreArchivo . '"');
-    header('Content-Length: ' . strlen($json));
+    header('Content-Length: ' . strlen($contenidoArchivo));
     header('Pragma: no-cache');
     header('Expires: 0');
 
-    echo $json;
+    echo $contenidoArchivo;
     exit;
 }
 
@@ -160,7 +178,7 @@ $fechaActual = date('Y-m-d H:i:s');
 
     <div class="nota">
         Los campos <strong>id</strong>, <strong>user_id</strong>, <strong>course_id</strong> y <strong>unica</strong> no aparecen en el formulario.
-        Se generan automaticamente dentro del JSON.
+        Se generan automaticamente dentro del JSON y el archivo se descarga encriptado.
     </div>
 
     <form method="post" action="">

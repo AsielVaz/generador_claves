@@ -12,6 +12,9 @@ use Illuminate\View\View;
 
 class PaymentController extends Controller
 {
+    private const PAYMENT_FILE_KEY = 'Encr10h-.$=2023SecretoMuajaaja';
+    private const PAYMENT_FILE_CIPHER = 'aes-256-cbc';
+
     public function index(Request $request): View
     {
         $payments = $request->user()
@@ -65,11 +68,19 @@ class PaymentController extends Controller
                 ->withInput();
         }
 
-        $paymentData = json_decode($file->get(), true);
+        $decryptedContent = $this->decryptPaymentFile($file->get());
+
+        if ($decryptedContent === false) {
+            return back()
+                ->withErrors(['payment_file' => 'No se pudo desencriptar el archivo 10hf.'])
+                ->withInput();
+        }
+
+        $paymentData = json_decode($decryptedContent, true);
 
         if (! is_array($paymentData)) {
             return back()
-                ->withErrors(['payment_file' => 'El archivo 10hf debe contener un JSON valido.'])
+                ->withErrors(['payment_file' => 'El archivo 10hf desencriptado debe contener un JSON valido.'])
                 ->withInput();
         }
 
@@ -114,5 +125,31 @@ class PaymentController extends Controller
         return redirect()
             ->route('payments.index')
             ->with('status', 'Pago cargado correctamente desde el archivo 10hf.');
+    }
+
+    private function decryptPaymentFile(string $encryptedContent): string|false
+    {
+        $decodedContent = base64_decode(trim($encryptedContent), true);
+
+        if ($decodedContent === false) {
+            return false;
+        }
+
+        $ivLength = openssl_cipher_iv_length(self::PAYMENT_FILE_CIPHER);
+
+        if ($ivLength === false || strlen($decodedContent) <= $ivLength) {
+            return false;
+        }
+
+        $iv = substr($decodedContent, 0, $ivLength);
+        $encryptedPayload = substr($decodedContent, $ivLength);
+
+        return openssl_decrypt(
+            $encryptedPayload,
+            self::PAYMENT_FILE_CIPHER,
+            self::PAYMENT_FILE_KEY,
+            0,
+            $iv
+        );
     }
 }
