@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/pagos', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/pagos/nuevo', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('/pagos/previsualizar', [PaymentController::class, 'preview'])->name('payments.preview');
     Route::post('/pagos', [PaymentController::class, 'store'])->name('payments.store');
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {

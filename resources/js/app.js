@@ -5,6 +5,16 @@ if (paymentForm) {
     const preview = paymentForm.querySelector('[data-payment-preview]');
     const errorBox = paymentForm.querySelector('[data-payment-preview-error]');
     const submitButton = paymentForm.querySelector('[data-payment-submit]');
+    const previewUrl = paymentForm.dataset.paymentPreviewUrl;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    const setText = (field, value) => {
+        const target = paymentForm.querySelector(`[data-preview-field="${field}"]`);
+
+        if (target) {
+            target.textContent = value || 'Sin referencia';
+        }
+    };
 
     const resetPreview = () => {
         preview.classList.add('hidden');
@@ -18,6 +28,21 @@ if (paymentForm) {
         errorBox.textContent = message;
         errorBox.classList.remove('hidden');
         submitButton.disabled = true;
+    };
+
+    const showPreview = (payment) => {
+        const amount = Number(payment.amount);
+
+        setText('amount', amount.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' }));
+        setText('method', payment.method);
+        setText('status', payment.status);
+        setText('paid_at', payment.paid_at || 'Sin fecha');
+        setText('reference', payment.reference || 'Sin referencia');
+        setText('unica', payment.unica);
+
+        errorBox.classList.add('hidden');
+        preview.classList.remove('hidden');
+        submitButton.disabled = false;
     };
 
     fileInput.addEventListener('change', async () => {
@@ -34,6 +59,35 @@ if (paymentForm) {
             return;
         }
 
-        submitButton.disabled = false;
+        const formData = new FormData();
+        formData.append('course_id', paymentForm.querySelector('[name="course_id"]').value);
+        formData.append('payment_file', file);
+
+        try {
+            const response = await fetch(previewUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: formData,
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                let message = data.message || 'No se pudo previsualizar el archivo 10hf.';
+
+                if (data.decrypted_content) {
+                    message = `${message}\n\nCadena desencriptada:\n${data.decrypted_content}`;
+                }
+
+                showError(message);
+                return;
+            }
+
+            showPreview(data.payment);
+        } catch (error) {
+            showError('No se pudo previsualizar el archivo 10hf.');
+        }
     });
 }

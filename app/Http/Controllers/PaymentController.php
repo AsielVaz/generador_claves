@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Payment;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,38 @@ class PaymentController extends Controller
         return view('payments.create', compact('courses'));
     }
 
+    public function preview(Request $request): JsonResponse
+    {
+        $courseIds = $request->user()->courses()->pluck('courses.id')->all();
+
+        $request->validate([
+            'course_id' => ['required', Rule::in($courseIds)],
+            'payment_file' => ['required', 'file', 'max:1024'],
+        ]);
+
+        $paymentFile = $this->readPaymentFile($request->file('payment_file'));
+
+        if (isset($paymentFile['error'])) {
+            return response()->json([
+                'message' => $paymentFile['error'],
+                'decrypted_content' => $paymentFile['decrypted_content'] ?? null,
+            ], 422);
+        }
+
+        $paymentData = $paymentFile['data'];
+
+        return response()->json([
+            'payment' => [
+                'amount' => (float) $paymentData['amount'],
+                'method' => $paymentData['method'],
+                'status' => $paymentData['status'],
+                'reference' => $paymentData['reference'] ?? null,
+                'unica' => $paymentData['unica'],
+                'paid_at' => $paymentData['paid_at'] ?? null,
+            ],
+        ]);
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $courseIds = $request->user()->courses()->pluck('courses.id')->all();
@@ -60,32 +93,55 @@ class PaymentController extends Controller
                 ->withInput();
         }
 
-        $file = $request->file('payment_file');
+        $paymentFile = $this->readPaymentFile($request->file('payment_file'));
 
-        if (strtolower($file->getClientOriginalExtension()) !== '10hf') {
+        if (isset($paymentFile['error'])) {
             return back()
-                ->withErrors(['payment_file' => 'El archivo debe tener extension .10hf.'])
+                ->withErrors(['payment_file' => $paymentFile['error']])
+                ->with('decrypted_payment_content', $paymentFile['decrypted_content'] ?? null)
                 ->withInput();
+        }
+
+        $paymentData = $paymentFile['data'];
+
+        $request->user()->payments()->create([
+            'course_id' => $validated['course_id'],
+            'amount' => $paymentData['amount'],
+            'method' => $paymentData['method'],
+            'status' => $paymentData['status'],
+            'reference' => $paymentData['reference'] ?? null,
+            'unica' => $paymentData['unica'],
+            'paid_at' => $paymentData['paid_at'] ?? null,
+        ]);
+
+        return redirect()
+            ->route('payments.index')
+            ->with('status', 'Pago cargado correctamente desde el archivo 10hf.');
+    }
+
+    private function readPaymentFile($file): array
+    {
+        if (strtolower($file->getClientOriginalExtension()) !== '10hf') {
+            return ['error' => 'El archivo debe tener extension .10hf.'];
         }
 
         $decryptedContent = $this->decryptPaymentFile($file->get());
 
         if ($decryptedContent === false) {
-            return back()
-                ->withErrors(['payment_file' => 'No se pudo desencriptar el archivo 10hf.'])
-                ->withInput();
+            return ['error' => 'No se pudo desencriptar el archivo 10hf.'];
         }
 
         $paymentData = json_decode($decryptedContent, true);
 
         if (! is_array($paymentData)) {
-            return back()
-                ->withErrors(['payment_file' => 'El archivo 10hf desencriptado debe contener un JSON valido.'])
-                ->withInput();
+            return [
+                'error' => 'El archivo 10hf desencriptado debe contener un JSON valido.',
+                'decrypted_content' => $decryptedContent,
+            ];
         }
 
         $fileValidator = Validator::make($paymentData, [
-            'amount' => ['required', 'numeric', 'min:1', 'max:999999.99'],
+            'amount' => ['required', 'numeric', 'min:0.01', 'max:999999.99'],
             'method' => ['required', 'string', 'max:50'],
             'status' => ['required', 'string', 'max:50'],
             'reference' => ['nullable', 'string', 'max:255'],
@@ -101,30 +157,20 @@ class PaymentController extends Controller
         ]);
 
         if ($fileValidator->fails()) {
-            return back()
-                ->withErrors(['payment_file' => 'El JSON del archivo no tiene la estructura esperada.'])
-                ->withInput();
+            return [
+                'error' => 'El JSON del archivo no tiene la estructura esperada: '.$fileValidator->errors()->first(),
+                'decrypted_content' => $decryptedContent,
+            ];
         }
 
         if (Payment::where('unica', $paymentData['unica'])->exists()) {
-            return back()
-                ->withErrors(['payment_file' => 'Este pago ya fue cargado anteriormente.'])
-                ->withInput();
+            return [
+                'error' => 'Este pago ya fue cargado anteriormente.',
+                'decrypted_content' => $decryptedContent,
+            ];
         }
 
-        $request->user()->payments()->create([
-            'course_id' => $validated['course_id'],
-            'amount' => $paymentData['amount'],
-            'method' => $paymentData['method'],
-            'status' => $paymentData['status'],
-            'reference' => $paymentData['reference'] ?? null,
-            'unica' => $paymentData['unica'],
-            'paid_at' => $paymentData['paid_at'] ?? null,
-        ]);
-
-        return redirect()
-            ->route('payments.index')
-            ->with('status', 'Pago cargado correctamente desde el archivo 10hf.');
+        return ['data' => $paymentData];
     }
 
     private function decryptPaymentFile(string $encryptedContent): string|false

@@ -60,6 +60,49 @@ class EncryptedPaymentUploadTest extends TestCase
         ]);
     }
 
+    public function test_user_can_preview_encrypted_payment_file(): void
+    {
+        $user = User::factory()->create();
+        $course = Course::create([
+            'title' => 'Curso de prueba',
+            'slug' => 'curso-de-prueba-preview',
+            'payment_start_date' => now()->subDay()->toDateString(),
+            'payment_end_date' => now()->addDay()->toDateString(),
+            'minimum_payment' => 100,
+            'course_cost' => 1000,
+            'price' => 1000,
+        ]);
+
+        $user->courses()->attach($course);
+
+        $payload = [
+            'amount' => 2500,
+            'method' => 'transferencia',
+            'status' => 'paid',
+            'reference' => 'REF-PREVIEW',
+            'unica' => 'encrypted-preview-test',
+            'paid_at' => now()->toDateString(),
+        ];
+
+        $file = UploadedFile::fake()->createWithContent(
+            'payment.10hf',
+            $this->encryptPaymentPayload(json_encode($payload, JSON_THROW_ON_ERROR))
+        );
+
+        $response = $this->actingAs($user)->postJson(route('payments.preview'), [
+            'course_id' => $course->id,
+            'payment_file' => $file,
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('payment.amount', 2500)
+            ->assertJsonPath('payment.method', 'transferencia')
+            ->assertJsonPath('payment.status', 'paid')
+            ->assertJsonPath('payment.reference', 'REF-PREVIEW')
+            ->assertJsonPath('payment.unica', 'encrypted-preview-test');
+    }
+
     private function encryptPaymentPayload(string $payload): string
     {
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
