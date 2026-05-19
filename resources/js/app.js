@@ -60,7 +60,6 @@ if (paymentForm) {
         }
 
         const formData = new FormData();
-        formData.append('course_id', paymentForm.querySelector('[name="course_id"]').value);
         formData.append('payment_file', file);
 
         try {
@@ -89,5 +88,21 @@ if (paymentForm) {
         } catch (error) {
             showError('No se pudo previsualizar el archivo 10hf.');
         }
+    });
+}
+
+const passwordToggle = document.querySelector('[data-password-toggle]');
+
+if (passwordToggle) {
+    const passwordFields = document.querySelectorAll('[data-password-field]');
+
+    passwordToggle.addEventListener('click', () => {
+        const shouldShow = Array.from(passwordFields).some((field) => field.type === 'password');
+
+        passwordFields.forEach((field) => {
+            field.type = shouldShow ? 'text' : 'password';
+        });
+
+        passwordToggle.textContent = shouldShow ? 'Ocultar contrasenas' : 'Ver contrasenas';
     });
 }

@@ -43,7 +43,6 @@ class EncryptedPaymentUploadTest extends TestCase
         );
 
         $response = $this->actingAs($user)->post(route('payments.store'), [
-            'course_id' => $course->id,
             'payment_file' => $file,
         ]);
 
@@ -51,7 +50,8 @@ class EncryptedPaymentUploadTest extends TestCase
 
         $this->assertDatabaseHas(Payment::class, [
             'user_id' => $user->id,
-            'course_id' => $course->id,
+            'course_id' => null,
+            'type' => Payment::TYPE_WALLET_CREDIT,
             'amount' => 1500,
             'method' => 'transferencia',
             'status' => 'paid',
@@ -91,7 +91,6 @@ class EncryptedPaymentUploadTest extends TestCase
         );
 
         $response = $this->actingAs($user)->postJson(route('payments.preview'), [
-            'course_id' => $course->id,
             'payment_file' => $file,
         ]);
 

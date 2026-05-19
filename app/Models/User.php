@@ -44,4 +44,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+
+    public function walletBalance(): float
+    {
+        $credits = $this->payments()
+            ->where('type', Payment::TYPE_WALLET_CREDIT)
+            ->where('status', 'paid')
+            ->sum('amount');
+
+        $debits = $this->payments()
+            ->where('type', Payment::TYPE_COURSE_PAYMENT)
+            ->where('status', 'paid')
+            ->where('is_condoned', false)
+            ->sum('amount');
+
+        return max(0, round((float) $credits - (float) $debits, 2));
+    }
 }

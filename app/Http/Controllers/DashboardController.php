@@ -34,7 +34,10 @@ class DashboardController extends Controller
             'enrolledCoursesCount' => $user->courses()->count(),
             'enrolledCourses' => $enrolledCourses,
             'recentPayments' => $recentPayments,
-            'paymentsTotal' => Payment::where('user_id', $user->id)->sum('amount'),
+            'paymentsTotal' => Payment::where('user_id', $user->id)
+                ->where('type', Payment::TYPE_WALLET_CREDIT)
+                ->sum('amount'),
+            'walletBalance' => $user->walletBalance(),
         ]);
     }
 }

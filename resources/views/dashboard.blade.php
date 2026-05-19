@@ -9,8 +9,9 @@
             <p class="mt-3 text-3xl font-semibold">{{ $enrolledCoursesCount }}</p>
         </div>
         <div class="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-            <p class="text-sm text-zinc-500">Pagos registrados</p>
-            <p class="mt-3 text-3xl font-semibold">${{ number_format($paymentsTotal, 2) }}</p>
+            <p class="text-sm text-zinc-500">Saldo en cartera</p>
+            <p class="mt-3 text-3xl font-semibold">${{ number_format($walletBalance, 2) }}</p>
+            <p class="mt-2 text-xs text-zinc-500">Cargado: ${{ number_format($paymentsTotal, 2) }}</p>
         </div>
     </div>
 
@@ -50,7 +51,7 @@
                     <div class="px-5 py-4">
                         <div class="flex items-center justify-between gap-4">
                             <div>
-                                <p class="font-medium">{{ $payment->course->title }}</p>
+                                <p class="font-medium">{{ $payment->course->title ?? 'Cartera' }}</p>
                                 <p class="mt-1 text-sm text-zinc-500">{{ ucfirst($payment->method) }} · {{ $payment->created_at->format('d/m/Y') }}</p>
                             </div>
                             <div class="text-right">

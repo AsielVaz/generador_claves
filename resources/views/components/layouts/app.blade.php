@@ -12,10 +12,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/glass.css') }}">
         <script src="{{ asset('js/app.js') }}" defer></script>
     @endif
 </head>
-<body class="min-h-screen bg-zinc-100 text-zinc-950 antialiased">
+<body class="glass-app min-h-screen bg-zinc-100 text-zinc-950 antialiased">
     <div class="min-h-screen lg:flex">
         @auth
             <aside class="border-b border-zinc-200 bg-white lg:fixed lg:inset-y-0 lg:left-0 lg:w-72 lg:border-b-0 lg:border-r">

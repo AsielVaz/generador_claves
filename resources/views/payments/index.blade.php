@@ -20,9 +20,12 @@
                 <tbody class="divide-y divide-zinc-100">
                     @forelse ($payments as $payment)
                         <tr>
-                            <td class="px-5 py-4 font-medium">{{ $payment->course->title }}</td>
+                            <td class="px-5 py-4 font-medium">{{ $payment->course->title ?? 'Cartera' }}</td>
                             <td class="px-5 py-4 text-zinc-600">
                                 {{ ucfirst($payment->method) }}
+                                @if ($payment->type === \App\Models\Payment::TYPE_WALLET_CREDIT)
+                                    <span class="ml-2 rounded-md bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700">Saldo</span>
+                                @endif
                                 @if ($payment->is_condoned)
                                     <span class="ml-2 rounded-md bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Condonado</span>
                                 @endif

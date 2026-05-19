@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cursos', [CourseController::class, 'index'])->name('courses.index');
     Route::get('/mis-cursos', [CourseController::class, 'myCourses'])->name('courses.mine');
     Route::get('/mis-cursos/{course}', [CourseController::class, 'show'])->name('courses.show');
+    Route::post('/mis-cursos/{course}/pagar', [CourseController::class, 'pay'])->name('courses.pay');
     Route::post('/cursos/{course}/registro', [CourseController::class, 'enroll'])->name('courses.enroll');
 
     Route::get('/pagos', [PaymentController::class, 'index'])->name('payments.index');

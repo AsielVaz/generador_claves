@@ -63,6 +63,7 @@ class CondonationController extends Controller
         Payment::create([
             'user_id' => $user->id,
             'course_id' => $course->id,
+            'type' => Payment::TYPE_CONDONATION,
             'amount' => $remaining,
             'method' => 'condonacion',
             'status' => 'paid',

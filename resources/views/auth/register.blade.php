@@ -28,9 +28,16 @@
 
                 <div>
                     <label for="password" class="text-sm font-medium">Contrasena</label>
-                    <input id="password" name="password" type="password" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100">
+                    <input id="password" name="password" type="password" required data-password-field class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100">
                     @error('password') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
+
+                <div>
+                    <label for="password_confirmation" class="text-sm font-medium">Confirmar contrasena</label>
+                    <input id="password_confirmation" name="password_confirmation" type="password" required data-password-field class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100">
+                </div>
+
+                <button type="button" data-password-toggle class="w-full rounded-md border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Ver contrasenas</button>
 
                 <button class="w-full rounded-md bg-zinc-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800">Crear cuenta</button>
             </form>

@@ -16,6 +16,14 @@ class AdminReportController extends Controller
             ->orderBy('title')
             ->get();
 
+        $enrollmentReport = $courses->map(function (Course $course): array {
+            return [
+                'course' => $course,
+                'students_count' => $course->users->count(),
+                'students' => $course->users,
+            ];
+        });
+
         $rows = $courses->flatMap(function (Course $course): Collection {
             $courseCost = (float) ($course->course_cost ?: $course->price);
 
@@ -35,6 +43,6 @@ class AdminReportController extends Controller
             });
         });
 
-        return view('admin.reports.index', compact('rows'));
+        return view('admin.reports.index', compact('enrollmentReport', 'rows'));
     }
 }

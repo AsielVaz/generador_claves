@@ -56,7 +56,7 @@
                                     <p class="font-medium">{{ $payment->user->name }}</p>
                                     <p class="mt-1 text-xs text-zinc-500">{{ $payment->created_at->format('d/m/Y') }}</p>
                                 </td>
-                                <td class="px-5 py-4 text-zinc-600">{{ $payment->course->title }}</td>
+                                <td class="px-5 py-4 text-zinc-600">{{ $payment->course->title ?? 'Cartera' }}</td>
                                 <td class="px-5 py-4">
                                     <span class="rounded-md {{ $payment->status === 'pendiente' ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700' }} px-2.5 py-1 text-xs font-semibold">
                                         {{ ucfirst($payment->status) }}

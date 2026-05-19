@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\Payment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class PaymentController extends Controller
@@ -29,20 +27,14 @@ class PaymentController extends Controller
 
     public function create(Request $request): View
     {
-        $courses = $request->user()
-            ->courses()
-            ->orderBy('title')
-            ->get();
+        $walletBalance = $request->user()->walletBalance();
 
-        return view('payments.create', compact('courses'));
+        return view('payments.create', compact('walletBalance'));
     }
 
     public function preview(Request $request): JsonResponse
     {
-        $courseIds = $request->user()->courses()->pluck('courses.id')->all();
-
         $request->validate([
-            'course_id' => ['required', Rule::in($courseIds)],
             'payment_file' => ['required', 'file', 'max:1024'],
         ]);
 
@@ -71,27 +63,9 @@ class PaymentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $courseIds = $request->user()->courses()->pluck('courses.id')->all();
-
-        $validated = $request->validate([
-            'course_id' => ['required', Rule::in($courseIds)],
+        $request->validate([
             'payment_file' => ['required', 'file', 'max:1024'],
         ]);
-
-        $course = Course::findOrFail($validated['course_id']);
-        $today = now()->toDateString();
-
-        if (! $course->payment_start_date || ! $course->payment_end_date) {
-            return back()
-                ->withErrors(['course_id' => 'Este curso aun no tiene un periodo de pago configurado.'])
-                ->withInput();
-        }
-
-        if ($today < $course->payment_start_date->toDateString() || $today > $course->payment_end_date->toDateString()) {
-            return back()
-                ->withErrors(['course_id' => 'Solo puedes cargar pagos dentro del periodo permitido del curso.'])
-                ->withInput();
-        }
 
         $paymentFile = $this->readPaymentFile($request->file('payment_file'));
 
@@ -105,7 +79,8 @@ class PaymentController extends Controller
         $paymentData = $paymentFile['data'];
 
         $request->user()->payments()->create([
-            'course_id' => $validated['course_id'],
+            'course_id' => null,
+            'type' => Payment::TYPE_WALLET_CREDIT,
             'amount' => $paymentData['amount'],
             'method' => $paymentData['method'],
             'status' => $paymentData['status'],
@@ -116,7 +91,7 @@ class PaymentController extends Controller
 
         return redirect()
             ->route('payments.index')
-            ->with('status', 'Pago cargado correctamente desde el archivo 10hf.');
+            ->with('status', 'Saldo cargado correctamente en tu cartera.');
     }
 
     private function readPaymentFile($file): array

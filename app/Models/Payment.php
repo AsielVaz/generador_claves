@@ -10,9 +10,14 @@ class Payment extends Model
 {
     use HasFactory;
 
+    public const TYPE_WALLET_CREDIT = 'wallet_credit';
+    public const TYPE_COURSE_PAYMENT = 'course_payment';
+    public const TYPE_CONDONATION = 'condonation';
+
     protected $fillable = [
         'user_id',
         'course_id',
+        'type',
         'amount',
         'method',
         'status',

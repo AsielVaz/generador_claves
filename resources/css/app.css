@@ -9,3 +9,215 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@layer base {
+    :root {
+        --glass-surface: rgba(255, 255, 255, 0.54);
+        --glass-surface-strong: rgba(255, 255, 255, 0.72);
+        --glass-surface-soft: rgba(255, 255, 255, 0.34);
+        --glass-border: rgba(255, 255, 255, 0.62);
+        --glass-border-muted: rgba(15, 23, 42, 0.08);
+        --glass-shadow: 0 18px 55px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        --glass-shadow-soft: 0 10px 32px rgba(15, 23, 42, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.54);
+        --glass-text: #172033;
+        --glass-muted: #526071;
+        --glass-accent: #0f766e;
+    }
+
+    html {
+        background:
+            linear-gradient(135deg, rgba(211, 244, 255, 0.9) 0%, rgba(246, 251, 255, 0.72) 28%, rgba(235, 255, 246, 0.76) 55%, rgba(255, 246, 232, 0.86) 100%);
+        min-height: 100%;
+    }
+
+    body.glass-app {
+        color: var(--glass-text);
+        background:
+            linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(205, 240, 255, 0.22) 34%, rgba(219, 255, 238, 0.18) 68%, rgba(255, 255, 255, 0.28)),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(232, 245, 255, 0.58));
+        background-attachment: fixed;
+    }
+
+    body.glass-app::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background:
+            linear-gradient(100deg, rgba(14, 165, 233, 0.12), transparent 32%),
+            linear-gradient(250deg, rgba(16, 185, 129, 0.14), transparent 38%),
+            repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 18px);
+        opacity: 0.92;
+    }
+}
+
+@layer components {
+    .glass-app aside,
+    .glass-app header,
+    .glass-app article,
+    .glass-app section,
+    .glass-app .bg-white,
+    .glass-app .bg-zinc-50,
+    .glass-app .bg-zinc-100,
+    .glass-app .bg-emerald-50,
+    .glass-app .bg-amber-50,
+    .glass-app .bg-red-50,
+    .glass-app .bg-blue-50 {
+        border-color: var(--glass-border);
+        background-color: var(--glass-surface);
+        box-shadow: var(--glass-shadow-soft);
+        -webkit-backdrop-filter: blur(22px) saturate(165%);
+        backdrop-filter: blur(22px) saturate(165%);
+    }
+
+    .glass-app aside {
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.42));
+        box-shadow: 20px 0 60px rgba(15, 23, 42, 0.08), inset -1px 0 0 rgba(255, 255, 255, 0.52);
+    }
+
+    .glass-app header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background:
+            linear-gradient(90deg, rgba(255, 255, 255, 0.78), rgba(236, 253, 245, 0.48));
+        box-shadow: 0 14px 42px rgba(15, 23, 42, 0.08), inset 0 -1px 0 rgba(255, 255, 255, 0.42);
+    }
+
+    .glass-app article,
+    .glass-app section,
+    .glass-app main > div > .rounded-lg,
+    .glass-app main > div > .rounded-md,
+    .glass-app .max-w-2xl,
+    .glass-app .max-w-md {
+        position: relative;
+        overflow: hidden;
+        border-color: var(--glass-border);
+        background:
+            linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.34));
+        box-shadow: var(--glass-shadow);
+        -webkit-backdrop-filter: blur(24px) saturate(170%);
+        backdrop-filter: blur(24px) saturate(170%);
+    }
+
+    .glass-app article::before,
+    .glass-app section::before,
+    .glass-app main > div > .rounded-lg::before,
+    .glass-app .max-w-md::before,
+    .glass-app .max-w-2xl::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.55), transparent 42%);
+        opacity: 0.72;
+    }
+
+    .glass-app article > *,
+    .glass-app section > *,
+    .glass-app main > div > .rounded-lg > *,
+    .glass-app .max-w-md > *,
+    .glass-app .max-w-2xl > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .glass-app table thead,
+    .glass-app .bg-zinc-50 {
+        background-color: rgba(255, 255, 255, 0.38);
+    }
+
+    .glass-app tbody tr {
+        background-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .glass-app tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.34);
+    }
+
+    .glass-app input,
+    .glass-app select,
+    .glass-app textarea,
+    .glass-app pre {
+        border-color: rgba(255, 255, 255, 0.68);
+        background-color: rgba(255, 255, 255, 0.48);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.64), 0 8px 22px rgba(15, 23, 42, 0.06);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        backdrop-filter: blur(18px) saturate(160%);
+    }
+
+    .glass-app input:focus,
+    .glass-app select:focus,
+    .glass-app textarea:focus {
+        border-color: rgba(13, 148, 136, 0.48);
+        box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    }
+
+    .glass-app a[class*="bg-zinc-950"],
+    .glass-app button[class*="bg-zinc-950"],
+    .glass-app button[class*="bg-emerald-700"],
+    .glass-app .bg-zinc-950,
+    .glass-app .bg-emerald-700 {
+        border: 1px solid rgba(255, 255, 255, 0.46);
+        background:
+            linear-gradient(145deg, rgba(17, 24, 39, 0.9), rgba(15, 118, 110, 0.82));
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+
+    .glass-app a[class*="bg-zinc-950"]:hover,
+    .glass-app button[class*="bg-zinc-950"]:hover,
+    .glass-app button[class*="bg-emerald-700"]:hover,
+    .glass-app .bg-zinc-950:hover,
+    .glass-app .bg-emerald-700:hover {
+        background:
+            linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(20, 184, 166, 0.86));
+        transform: translateY(-1px);
+    }
+
+    .glass-app button:disabled {
+        border-color: rgba(255, 255, 255, 0.36);
+        background: rgba(226, 232, 240, 0.58);
+        box-shadow: none;
+        transform: none;
+    }
+
+    .glass-app nav a,
+    .glass-app span.rounded-md,
+    .glass-app a.rounded-md:not([class*="bg-zinc-950"]),
+    .glass-app button.rounded-md:not([class*="bg-zinc-950"]):not([class*="bg-emerald-700"]) {
+        border: 1px solid rgba(255, 255, 255, 0.38);
+        background-color: rgba(255, 255, 255, 0.28);
+        -webkit-backdrop-filter: blur(16px) saturate(150%);
+        backdrop-filter: blur(16px) saturate(150%);
+    }
+
+    .glass-app nav a:hover,
+    .glass-app a.rounded-md:hover {
+        background-color: rgba(255, 255, 255, 0.48);
+    }
+
+    .glass-app nav a.bg-zinc-950,
+    .glass-app nav a.text-white {
+        color: #ffffff;
+        background:
+            linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(13, 148, 136, 0.74));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 26px rgba(15, 23, 42, 0.16);
+    }
+
+    .glass-app .text-zinc-500,
+    .glass-app .text-zinc-600,
+    .glass-app .text-zinc-700 {
+        color: var(--glass-muted);
+    }
+
+    .glass-app .divide-y > :not(:last-child),
+    .glass-app .border-t,
+    .glass-app .border-b,
+    .glass-app .border-r,
+    .glass-app .divide-zinc-100 > :not(:last-child),
+    .glass-app .divide-zinc-200 > :not(:last-child) {
+        border-color: rgba(255, 255, 255, 0.42);
+    }
+}

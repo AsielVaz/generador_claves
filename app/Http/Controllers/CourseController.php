@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class CourseController extends Controller
@@ -46,7 +49,67 @@ class CourseController extends Controller
             ->orderBy('title')
             ->get();
 
-        return view('courses.mine', compact('courses', 'today'));
+        $walletBalance = $request->user()->walletBalance();
+
+        return view('courses.mine', compact('courses', 'today', 'walletBalance'));
+    }
+
+    public function pay(Request $request, Course $course): RedirectResponse
+    {
+        $user = $request->user();
+        $isEnrolled = $user->courses()
+            ->where('courses.id', $course->id)
+            ->exists();
+
+        if (! $isEnrolled) {
+            return redirect()
+                ->route('courses.mine')
+                ->withErrors(['course' => 'No estas inscrito en este curso.']);
+        }
+
+        $paidTotal = (float) $course->payments()
+            ->where('user_id', $user->id)
+            ->where('status', 'paid')
+            ->sum('amount');
+        $courseCost = (float) ($course->course_cost ?: $course->price);
+        $remainingCourseBalance = max(0, round($courseCost - $paidTotal, 2));
+        $walletBalance = $user->walletBalance();
+        $maxAmount = min($remainingCourseBalance, $walletBalance);
+
+        if ($maxAmount < 1) {
+            return back()
+                ->withErrors(['course' => 'No tienes saldo suficiente en tu cartera para pagar este curso.'])
+                ->withInput();
+        }
+
+        $validator = Validator::make($request->all(), [
+            'amount' => ['required', 'numeric', 'min:1', 'max:'.$maxAmount],
+        ], [], [
+            'amount' => 'monto',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors(['amount_'.$course->id => $validator->errors()->first('amount')])
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        DB::transaction(function () use ($user, $course, $validated) {
+            $user->payments()->create([
+                'course_id' => $course->id,
+                'type' => Payment::TYPE_COURSE_PAYMENT,
+                'amount' => $validated['amount'],
+                'method' => 'cartera',
+                'status' => 'paid',
+                'reference' => 'Pago de curso desde cartera',
+                'unica' => 'wallet_'.uniqid('', true),
+                'paid_at' => now(),
+            ]);
+        });
+
+        return back()->with('status', 'Pago aplicado correctamente al curso.');
     }
 
     public function show(Request $request, Course $course): View|RedirectResponse
