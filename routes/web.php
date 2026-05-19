@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/cursos/{course}/inscritos/excel', [AdminCourseController::class, 'export'])->name('courses.export');
         Route::get('/cursos/{course}/editar', [AdminCourseController::class, 'edit'])->name('courses.edit');
         Route::put('/cursos/{course}', [AdminCourseController::class, 'update'])->name('courses.update');
+        Route::patch('/cursos/{course}/archivar', [AdminCourseController::class, 'archive'])->name('courses.archive');
 
         Route::get('/condonaciones', [CondonationController::class, 'index'])->name('condonations.index');
         Route::post('/condonaciones', [CondonationController::class, 'store'])->name('condonations.store');

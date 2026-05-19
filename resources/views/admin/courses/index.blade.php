@@ -30,9 +30,16 @@
                             </td>
                             <td class="px-5 py-4 font-semibold">{{ $course->users_count }}</td>
                             <td class="px-5 py-4 text-right">
-                                <div class="flex justify-end gap-2">
+                                <div class="flex flex-wrap justify-end gap-2">
                                     <a href="{{ route('admin.courses.show', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Ver detalles</a>
                                     <a href="{{ route('admin.courses.edit', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Editar</a>
+                                    @if ($course->is_active)
+                                        <form method="POST" action="{{ route('admin.courses.archive', $course) }}" onsubmit="return confirm('¿Seguro que quieres archivar este curso? El curso dejara de estar activo.');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="rounded-md border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Archivar curso</button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

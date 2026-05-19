@@ -22,12 +22,12 @@
             <aside class="border-b border-zinc-200 bg-white lg:fixed lg:inset-y-0 lg:left-0 lg:w-72 lg:border-b-0 lg:border-r">
                 <div class="flex h-full flex-col px-5 py-5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-                        <span class="flex h-12 w-16 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white">
-                            <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain p-1">
+                        <span class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+                            <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain">
                         </span>
                         <span>
-                            <span class="block text-sm font-semibold">Cryptoefectivo</span>
-                            <span class="block text-xs text-zinc-500">Panel de cursos</span>
+                            <span class="block text-base font-semibold">Cryptoefectivo</span>
+                            <span class="block text-xs text-zinc-500">Efectivo encriptado</span>
                         </span>
                     </a>
 
@@ -61,9 +61,14 @@
             @auth
                 <header class="border-b border-zinc-200 bg-white">
                     <div class="flex items-center justify-between px-5 py-4 sm:px-8">
-                        <div>
-                            <p class="text-xs font-semibold uppercase text-emerald-700">Cryptoefectivo</p>
-                            <h1 class="mt-1 text-2xl font-semibold tracking-normal">{{ $heading ?? 'Dashboard' }}</h1>
+                        <div class="flex items-center gap-4">
+                            <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
+                                <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain">
+                            </span>
+                            <div>
+                                <p class="text-xs font-semibold uppercase text-emerald-700">Cryptoefectivo</p>
+                                <h1 class="mt-1 text-2xl font-semibold tracking-normal">{{ $heading ?? 'Dashboard' }}</h1>
+                            </div>
                         </div>
                         <form method="POST" action="{{ route('logout') }}" class="lg:hidden">
                             @csrf
@@ -93,6 +98,16 @@
                 @endif
 
                 {{ $slot }}
+
+                <footer class="@auth mt-8 @else fixed inset-x-0 bottom-0 px-5 pb-5 @endauth">
+                    <div class="rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
+                        <span class="font-semibold">Cryptoefectivo</span>
+                        <span class="mx-2">-</span>
+                        <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800">
+                            www.cryptoefectivo.com
+                        </a>
+                    </div>
+                </footer>
             </div>
         </main>
     </div>

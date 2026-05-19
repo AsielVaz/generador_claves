@@ -128,6 +128,13 @@ class AdminCourseController extends Controller
             ->with('status', 'Curso actualizado correctamente.');
     }
 
+    public function archive(Course $course): RedirectResponse
+    {
+        $course->update(['is_active' => false]);
+
+        return back()->with('status', 'Curso archivado correctamente.');
+    }
+
     private function enrollmentRows(Course $course): Collection
     {
         $courseCost = (float) ($course->course_cost ?: $course->price);
