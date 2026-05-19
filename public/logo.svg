@@ -1,9 +1,6 @@
 <svg width="512" height="512" viewBox="0 0 512 512" role="img" xmlns="http://www.w3.org/2000/svg">
   <title>Crypto Efectivo</title>
-  <desc>Ícono de Crypto Efectivo — hexágono con candado encriptado</desc>
-
-  <!-- Fondo -->
-  <rect x="0" y="0" width="512" height="512" rx="0" fill="#0D1B2A"/>
+  <desc>Ícono de Crypto Efectivo — hexágono con candado encriptado sin fondo</desc>
 
   <!-- Hexágono exterior decorativo -->
   <polygon points="256,100 366,163 366,290 256,353 146,290 146,163" fill="none" stroke="#5891C7" stroke-width="3" opacity="0.3"/>
@@ -17,8 +14,10 @@
 
   <!-- Cuerpo del candado -->
   <rect x="224" y="236" width="64" height="50" rx="9" fill="#5891C7"/>
+
   <!-- Arco del candado -->
   <path d="M234 236 L234 214 Q256 192 278 214 L278 236" fill="none" stroke="#5891C7" stroke-width="6" stroke-linecap="round"/>
+
   <!-- Símbolo $ -->
   <text x="256" y="270" text-anchor="middle" font-family="'Courier New', monospace" font-size="22" font-weight="700" fill="#0D1B2A">$</text>
 
