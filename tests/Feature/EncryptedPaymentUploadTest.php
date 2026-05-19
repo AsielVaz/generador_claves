@@ -76,10 +76,11 @@ class EncryptedPaymentUploadTest extends TestCase
         $user->courses()->attach($course);
 
         $payload = [
-            'amount' => 2500,
-            'method' => 'transferencia',
+            'amount' => 0.04,
+            'method' => 'Tarjeta',
             'status' => 'paid',
             'reference' => 'REF-PREVIEW',
+            'email' => 'asielsempai@gmail.com',
             'unica' => 'encrypted-preview-test',
             'paid_at' => now()->toDateString(),
         ];
@@ -96,8 +97,8 @@ class EncryptedPaymentUploadTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertJsonPath('payment.amount', 2500)
-            ->assertJsonPath('payment.method', 'transferencia')
+            ->assertJsonPath('payment.amount', 0.04)
+            ->assertJsonPath('payment.method', 'Tarjeta')
             ->assertJsonPath('payment.status', 'paid')
             ->assertJsonPath('payment.reference', 'REF-PREVIEW')
             ->assertJsonPath('payment.unica', 'encrypted-preview-test');

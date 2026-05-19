@@ -1,1 +1,93 @@
-var e=document.querySelector(`[data-payment-upload-form]`);if(e){let t=e.querySelector(`input[name="payment_file"]`),n=e.querySelector(`[data-payment-preview]`),r=e.querySelector(`[data-payment-preview-error]`),i=e.querySelector(`[data-payment-submit]`),a=(t,n)=>{let r=e.querySelector(`[data-preview-field="${t}"]`);r&&(r.textContent=n||`Sin referencia`)},o=()=>{n.classList.add(`hidden`),r.classList.add(`hidden`),r.textContent=``,i.disabled=!0},s=e=>{n.classList.add(`hidden`),r.textContent=e,r.classList.remove(`hidden`),i.disabled=!0};t.addEventListener(`change`,async()=>{o();let[e]=t.files;if(e){if(!e.name.toLowerCase().endsWith(`.10hf`)){s(`El archivo debe tener extension .10hf.`);return}try{let t=JSON.parse(await e.text());if([`amount`,`method`,`status`,`unica`].find(e=>t[e]===void 0||t[e]===null||t[e]===``)){s(`El JSON no tiene la estructura requerida para registrar el pago.`);return}let o=Number(t.amount);if(!Number.isFinite(o)||o<=0){s(`El monto del JSON debe ser un numero mayor a cero.`);return}a(`amount`,o.toLocaleString(`es-MX`,{style:`currency`,currency:`MXN`})),a(`method`,t.method),a(`status`,t.status),a(`paid_at`,t.paid_at||`Sin fecha`),a(`reference`,t.reference||`Sin referencia`),a(`unica`,t.unica),r.classList.add(`hidden`),n.classList.remove(`hidden`),i.disabled=!1}catch{s(`No se pudo leer el archivo. Verifica que contenga un JSON valido.`)}}})}
+const paymentForm = document.querySelector('[data-payment-upload-form]');
+
+if (paymentForm) {
+    const fileInput = paymentForm.querySelector('input[name="payment_file"]');
+    const preview = paymentForm.querySelector('[data-payment-preview]');
+    const errorBox = paymentForm.querySelector('[data-payment-preview-error]');
+    const submitButton = paymentForm.querySelector('[data-payment-submit]');
+    const previewUrl = paymentForm.dataset.paymentPreviewUrl;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    const setText = (field, value) => {
+        const target = paymentForm.querySelector(`[data-preview-field="${field}"]`);
+
+        if (target) {
+            target.textContent = value || 'Sin referencia';
+        }
+    };
+
+    const resetPreview = () => {
+        preview.classList.add('hidden');
+        errorBox.classList.add('hidden');
+        errorBox.textContent = '';
+        submitButton.disabled = true;
+    };
+
+    const showError = (message) => {
+        preview.classList.add('hidden');
+        errorBox.textContent = message;
+        errorBox.classList.remove('hidden');
+        submitButton.disabled = true;
+    };
+
+    const showPreview = (payment) => {
+        const amount = Number(payment.amount);
+
+        setText('amount', amount.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' }));
+        setText('method', payment.method);
+        setText('status', payment.status);
+        setText('paid_at', payment.paid_at || 'Sin fecha');
+        setText('reference', payment.reference || 'Sin referencia');
+        setText('unica', payment.unica);
+
+        errorBox.classList.add('hidden');
+        preview.classList.remove('hidden');
+        submitButton.disabled = false;
+    };
+
+    fileInput.addEventListener('change', async () => {
+        resetPreview();
+
+        const [file] = fileInput.files;
+
+        if (!file) {
+            return;
+        }
+
+        if (!file.name.toLowerCase().endsWith('.10hf')) {
+            showError('El archivo debe tener extension .10hf.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('course_id', paymentForm.querySelector('[name="course_id"]').value);
+        formData.append('payment_file', file);
+
+        try {
+            const response = await fetch(previewUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: formData,
+            });
+            const data = await response.json();
+
+            if (!response.ok) {
+                let message = data.message || 'No se pudo previsualizar el archivo 10hf.';
+
+                if (data.decrypted_content) {
+                    message = `${message}\n\nCadena desencriptada:\n${data.decrypted_content}`;
+                }
+
+                showError(message);
+                return;
+            }
+
+            showPreview(data.payment);
+        } catch (error) {
+            showError('No se pudo previsualizar el archivo 10hf.');
+        }
+    });
+}
