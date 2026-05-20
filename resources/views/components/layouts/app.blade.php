@@ -62,8 +62,8 @@
 
         <main class="@auth lg:ml-72 @endauth min-h-screen flex-1">
             @auth
-                <header class="border-b border-zinc-200 bg-white">
-                    <div class="flex items-center justify-between px-5 py-4 sm:px-8">
+                <header class="border-b border-zinc-200 bg-white" style="position: relative;">
+                    <div class="flex items-center justify-between px-5 py-4 sm:px-8" style="position: relative; min-height: 88px;">
                         <div class="flex items-center gap-4">
                             <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                                 <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
@@ -72,6 +72,10 @@
                                 <p class="text-xs font-semibold uppercase text-emerald-700">CryptoEfectivo</p>
                                 <h1 class="mt-1 text-2xl font-semibold tracking-normal">{{ $heading ?? 'Dashboard' }}</h1>
                             </div>
+                        </div>
+                        <div style="position: absolute; top: 50%; right: 28px; transform: translateY(-50%); display: flex; align-items: center; justify-content: flex-end; gap: 16px; opacity: 0.58; pointer-events: none;">
+                            <img src="{{ asset('edw.png') }}" alt="EDW" style="height: 64px; width: auto; object-fit: contain; display: block; filter: grayscale(1) contrast(1.15);">
+                            <img src="{{ asset('imet.png') }}" alt="IMET" style="height: 64px; width: auto; object-fit: contain; display: block; filter: grayscale(1) contrast(1.15);">
                         </div>
                         <form method="POST" action="{{ route('logout') }}" class="lg:hidden">
                             @csrf
