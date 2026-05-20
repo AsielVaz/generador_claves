@@ -88,7 +88,7 @@ if (! function_exists('enviarCorreoBienvenida')) {
         $templatePath = resource_path('emails/bienvenida_imet_edworld_crypto_efectivo.html');
         $mensaje = file_exists($templatePath)
             ? file_get_contents($templatePath)
-            : '<p>Hola [NOMBRE_DEL_PARTICIPANTE], tu cuenta fue creada correctamente en Cryptoefectivo.</p>';
+            : '<p>Hola [NOMBRE_DEL_PARTICIPANTE], tu cuenta fue creada correctamente en CryptoEfectivo.</p>';
 
         $mensaje = str_replace(
             ['[NOMBRE_DEL_PARTICIPANTE]', '[CORREO_REGISTRADO@DOMINIO.COM]'],

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ? $title.' | Cryptoefectivo' : config('app.name', 'Cryptoefectivo') }}</title>
+    <title>{{ $title ? $title.' | CryptoEfectivo' : config('app.name', 'CryptoEfectivo') }}</title>
     @fonts
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -23,10 +23,10 @@
                 <div class="flex h-full flex-col px-5 py-5">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
                         <span class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
-                            <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain">
+                            <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
                         </span>
                         <span>
-                            <span class="block text-base font-semibold">Cryptoefectivo</span>
+                            <span class="block text-base font-semibold">CryptoEfectivo</span>
                             <span class="block text-xs text-zinc-500">Efectivo encriptado</span>
                         </span>
                     </a>
@@ -64,10 +64,10 @@
                     <div class="flex items-center justify-between px-5 py-4 sm:px-8">
                         <div class="flex items-center gap-4">
                             <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
-                                <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain">
+                                <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
                             </span>
                             <div>
-                                <p class="text-xs font-semibold uppercase text-emerald-700">Cryptoefectivo</p>
+                                <p class="text-xs font-semibold uppercase text-emerald-700">CryptoEfectivo</p>
                                 <h1 class="mt-1 text-2xl font-semibold tracking-normal">{{ $heading ?? 'Dashboard' }}</h1>
                             </div>
                         </div>

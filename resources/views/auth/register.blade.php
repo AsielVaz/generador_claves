@@ -3,10 +3,10 @@
         <div class="w-full max-w-md rounded-lg border border-zinc-200 bg-white p-8 shadow-sm">
             <div class="mb-8">
                 <div class="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
-                    <img src="{{ asset('logo.svg') }}" alt="Cryptoefectivo" class="h-full w-full object-contain">
+                    <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
                 </div>
                 <h1 class="mt-5 text-center text-2xl font-semibold">Crear cuenta</h1>
-                <p class="mt-2 text-center text-sm text-zinc-500">Registrate en Cryptoefectivo con tu cuenta Gmail.</p>
+                <p class="mt-2 text-center text-sm text-zinc-500">Registrate en CryptoEfectivo con tu cuenta Gmail.</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-5">
