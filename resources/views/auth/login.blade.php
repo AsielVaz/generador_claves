@@ -5,7 +5,7 @@
                 <div class="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm">
                     <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
                 </div>
-                <h1 class="mt-5 text-center text-2xl font-semibold">Iniciar sesion</h1>
+                <h1 class="mt-5 text-center text-2xl font-semibold">Iniciar sesión</h1>
                 <p class="mt-2 text-center text-sm text-zinc-500">Accede a CryptoEfectivo.</p>
             </div>
 
@@ -18,7 +18,7 @@
                 </div>
 
                 <div>
-                    <label for="password" class="text-sm font-medium">Contrasena</label>
+                    <label for="password" class="text-sm font-medium">Contraseña</label>
                     <input id="password" name="password" type="password" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100">
                     @error('password') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
@@ -33,7 +33,7 @@
 
             <p class="mt-6 text-center text-sm text-zinc-600">
                 No tienes cuenta?
-                <a href="{{ route('register') }}" class="font-semibold text-emerald-700 hover:text-emerald-800">Registrate</a>
+                <a href="{{ route('register') }}" class="font-semibold text-emerald-700 hover:text-emerald-800">Regístrate</a>
             </p>
         </div>
     </div>

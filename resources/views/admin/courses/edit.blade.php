@@ -65,6 +65,9 @@
         </label>
 
         <div class="flex justify-end gap-3 border-t border-zinc-100 pt-5">
+            @if ($course->is_active)
+                <a href="{{ route('admin.courses.archive.confirm', $course) }}" class="mr-auto rounded-md border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Archivar curso</a>
+            @endif
             <a href="{{ route('admin.courses.index') }}" class="rounded-md border border-zinc-300 px-4 py-2 text-sm font-semibold">Cancelar</a>
             <button class="rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white">Guardar cambios</button>
         </div>

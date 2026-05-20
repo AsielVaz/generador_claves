@@ -33,9 +33,6 @@
                                 <div class="flex flex-wrap justify-end gap-2">
                                     <a href="{{ route('admin.courses.show', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Ver detalles</a>
                                     <a href="{{ route('admin.courses.edit', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Editar</a>
-                                    @if ($course->is_active)
-                                        <a href="{{ route('admin.courses.archive.confirm', $course) }}" class="rounded-md border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Archivar curso</a>
-                                    @endif
                                 </div>
                             </td>
                         </tr>
