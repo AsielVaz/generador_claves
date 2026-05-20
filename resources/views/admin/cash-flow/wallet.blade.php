@@ -1,4 +1,4 @@
-<x-layouts.app title="Saldos cartera" heading="Saldos cartera">
+<x-layouts.app title="Flujo de efectivo" heading="Flujo de efectivo">
     <div class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 p-5">
         <p class="text-sm text-emerald-800">Total acreditado a carteras</p>
         <p class="mt-1 text-3xl font-semibold text-emerald-950">${{ number_format($totalCredits, 2) }}</p>

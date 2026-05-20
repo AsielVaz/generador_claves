@@ -24,6 +24,7 @@ class Course extends Model
         'price',
         'duration_hours',
         'is_active',
+        'archived_at',
     ];
 
     protected function casts(): array
@@ -37,6 +38,7 @@ class Course extends Model
             'payment_start_date' => 'date',
             'payment_end_date' => 'date',
             'is_active' => 'boolean',
+            'archived_at' => 'datetime',
         ];
     }
 

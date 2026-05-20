@@ -40,7 +40,9 @@
                         @else
                             <a href="{{ route('admin.users.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Usuarios</a>
                             <a href="{{ route('admin.courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos admin</a>
-                            <a href="{{ route('admin.wallet-credits.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.wallet-credits.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Saldos cartera</a>
+                            <a href="{{ route('admin.cash-flow.wallet') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.wallet') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo de efectivo</a>
+                            <a href="{{ route('admin.cash-flow.finished-cycles') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.finished-cycles') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Ciclos finiquitados</a>
+                            <a href="{{ route('admin.cash-flow.active') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.active') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo activo</a>
                             <a href="{{ route('admin.condonations.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.condonations.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Condonaciones</a>
                             <a href="{{ route('admin.reports.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Reportes</a>
                         @endif
@@ -101,10 +103,14 @@
                 {{ $slot }}
 
                 <footer class="@auth mt-8 @else fixed inset-x-0 bottom-0 px-5 pb-5 @endauth">
-                    <div class="rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
+                    <div class="relative min-h-[104px] rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
                         <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800">
                             www.cryptoefectivo.com
                         </a>
+                        <div class="mt-3 flex items-center justify-center gap-3 opacity-55 sm:absolute sm:right-5 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2 sm:justify-end">
+                            <img src="{{ asset('edw.png') }}" alt="EDW" class="h-[72px] w-auto object-contain">
+                            <img src="{{ asset('imet.png') }}" alt="IMET" class="h-[72px] w-auto object-contain">
+                        </div>
                     </div>
                 </footer>
             </div>

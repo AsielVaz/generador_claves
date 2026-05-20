@@ -175,7 +175,10 @@ class AdminCourseController extends Controller
                 ]);
             }
 
-            $course->update(['is_active' => false]);
+            $course->update([
+                'is_active' => false,
+                'archived_at' => now(),
+            ]);
         });
 
         $message = $refunds->isEmpty()

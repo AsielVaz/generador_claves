@@ -56,6 +56,7 @@ class CourseArchiveRefundTest extends TestCase
 
         $response->assertRedirect(route('admin.courses.index'));
         $this->assertFalse($course->fresh()->is_active);
+        $this->assertNotNull($course->fresh()->archived_at);
         $this->assertDatabaseHas(Payment::class, [
             'user_id' => $student->id,
             'course_id' => null,

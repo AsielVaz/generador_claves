@@ -6,8 +6,8 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\CashFlowController;
 use App\Http\Controllers\Admin\CondonationController;
-use App\Http\Controllers\Admin\WalletCreditController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
@@ -62,7 +62,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/condonaciones', [CondonationController::class, 'index'])->name('condonations.index');
         Route::post('/condonaciones', [CondonationController::class, 'store'])->name('condonations.store');
 
-        Route::get('/saldos-cartera', [WalletCreditController::class, 'index'])->name('wallet-credits.index');
+        Route::redirect('/saldos-cartera', '/admin/flujo-efectivo');
+        Route::get('/flujo-efectivo', [CashFlowController::class, 'wallet'])->name('cash-flow.wallet');
+        Route::get('/ciclos-finiquitados', [CashFlowController::class, 'finishedCycles'])->name('cash-flow.finished-cycles');
+        Route::get('/flujo-activo', [CashFlowController::class, 'activeFlow'])->name('cash-flow.active');
 
         Route::get('/reportes', [AdminReportController::class, 'index'])->name('reports.index');
     });

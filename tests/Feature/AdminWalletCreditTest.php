@@ -58,7 +58,7 @@ class AdminWalletCreditTest extends TestCase
             'is_condoned' => true,
         ]);
 
-        $response = $this->actingAs($admin)->get(route('admin.wallet-credits.index'));
+        $response = $this->actingAs($admin)->get(route('admin.cash-flow.wallet'));
 
         $response
             ->assertOk()
