@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/flujo-efectivo', [CashFlowController::class, 'wallet'])->name('cash-flow.wallet');
         Route::get('/ciclos-finiquitados', [CashFlowController::class, 'finishedCycles'])->name('cash-flow.finished-cycles');
         Route::get('/flujo-activo', [CashFlowController::class, 'activeFlow'])->name('cash-flow.active');
+        Route::get('/saldo-sin-usar', [CashFlowController::class, 'unusedBalance'])->name('cash-flow.unused-balance');
 
         Route::get('/reportes', [AdminReportController::class, 'index'])->name('reports.index');
     });

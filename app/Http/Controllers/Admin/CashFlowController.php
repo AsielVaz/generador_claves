@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\View\View;
 
 class CashFlowController extends Controller
@@ -49,6 +50,41 @@ class CashFlowController extends Controller
         $totalCollected = $rows->sum('collected_total');
 
         return view('admin.cash-flow.active-flow', compact('rows', 'totalCollected'));
+    }
+
+    public function unusedBalance(): View
+    {
+        $rows = User::where('is_admin', false)
+            ->orderBy('name')
+            ->get()
+            ->map(function (User $user) {
+                $totalCredited = (float) $user->payments()
+                    ->where('type', Payment::TYPE_WALLET_CREDIT)
+                    ->where('status', 'paid')
+                    ->where('is_condoned', false)
+                    ->sum('amount');
+
+                $totalSpent = (float) $user->payments()
+                    ->where('type', Payment::TYPE_COURSE_PAYMENT)
+                    ->where('status', 'paid')
+                    ->where('is_condoned', false)
+                    ->sum('amount');
+
+                return [
+                    'user' => $user,
+                    'total_credited' => $totalCredited,
+                    'total_spent' => $totalSpent,
+                    'unused_balance' => max(0, round($totalCredited - $totalSpent, 2)),
+                ];
+            })
+            ->filter(fn (array $row) => $row['unused_balance'] > 0)
+            ->values();
+
+        $totalCredited = $rows->sum('total_credited');
+        $totalSpent = $rows->sum('total_spent');
+        $totalUnused = $rows->sum('unused_balance');
+
+        return view('admin.cash-flow.unused-balance', compact('rows', 'totalCredited', 'totalSpent', 'totalUnused'));
     }
 
     private function courseFlowRow(Course $course): array

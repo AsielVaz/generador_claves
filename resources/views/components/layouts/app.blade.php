@@ -40,9 +40,15 @@
                         @else
                             <a href="{{ route('admin.users.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Usuarios</a>
                             <a href="{{ route('admin.courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos admin</a>
-                            <a href="{{ route('admin.cash-flow.wallet') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.wallet') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo de efectivo</a>
-                            <a href="{{ route('admin.cash-flow.finished-cycles') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.finished-cycles') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Ciclos finiquitados</a>
-                            <a href="{{ route('admin.cash-flow.active') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.active') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo activo</a>
+                            <details class="group" {{ request()->routeIs('admin.cash-flow.*') ? 'open' : '' }}>
+                                <summary class="cursor-pointer rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo de efectivo</summary>
+                                <div class="mt-1 flex flex-col gap-1 pl-3">
+                                    <a href="{{ route('admin.cash-flow.finished-cycles') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.finished-cycles') ? 'bg-emerald-50 text-emerald-800' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Ciclos finiquitados</a>
+                                    <a href="{{ route('admin.cash-flow.active') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.active') ? 'bg-emerald-50 text-emerald-800' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Flujo activo</a>
+                                    <a href="{{ route('admin.cash-flow.wallet') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.wallet') ? 'bg-emerald-50 text-emerald-800' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Saldos totales</a>
+                                    <a href="{{ route('admin.cash-flow.unused-balance') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.cash-flow.unused-balance') ? 'bg-emerald-50 text-emerald-800' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Saldo sin usar</a>
+                                </div>
+                            </details>
                             <a href="{{ route('admin.condonations.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.condonations.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Condonaciones</a>
                             <a href="{{ route('admin.reports.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Reportes</a>
                         @endif
