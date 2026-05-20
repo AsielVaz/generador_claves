@@ -56,6 +56,10 @@ class CourseController extends Controller
 
     public function pay(Request $request, Course $course): RedirectResponse
     {
+        $request->merge([
+            'amount' => $this->normalizeMoney($request->input('amount')),
+        ]);
+
         $user = $request->user();
         $isEnrolled = $user->courses()
             ->where('courses.id', $course->id)
@@ -110,6 +114,11 @@ class CourseController extends Controller
         });
 
         return back()->with('status', 'Pago aplicado correctamente al curso.');
+    }
+
+    private function normalizeMoney(?string $value): ?string
+    {
+        return $value === null ? null : str_replace(',', '', $value);
     }
 
     public function show(Request $request, Course $course): View|RedirectResponse

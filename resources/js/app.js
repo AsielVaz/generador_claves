@@ -1,5 +1,38 @@
 const paymentForm = document.querySelector('[data-payment-upload-form]');
 
+const moneyInputs = document.querySelectorAll('[data-money-input]');
+
+const cleanMoneyValue = (value) => value.replace(/,/g, '').replace(/[^\d.]/g, '');
+
+const formatMoneyValue = (value) => {
+    const cleaned = cleanMoneyValue(value);
+
+    if (!cleaned) {
+        return '';
+    }
+
+    const [integerPart, ...decimalParts] = cleaned.split('.');
+    const decimals = decimalParts.join('').slice(0, 2);
+    const integer = integerPart.replace(/^0+(?=\d)/, '') || '0';
+    const formattedInteger = Number(integer).toLocaleString('en-US');
+
+    return decimals.length > 0 || cleaned.includes('.')
+        ? `${formattedInteger}.${decimals}`
+        : formattedInteger;
+};
+
+moneyInputs.forEach((input) => {
+    input.value = formatMoneyValue(input.value);
+
+    input.addEventListener('input', () => {
+        input.value = formatMoneyValue(input.value);
+    });
+
+    input.form?.addEventListener('submit', () => {
+        input.value = cleanMoneyValue(input.value);
+    });
+});
+
 if (paymentForm) {
     const fileInput = paymentForm.querySelector('input[name="payment_file"]');
     const preview = paymentForm.querySelector('[data-payment-preview]');

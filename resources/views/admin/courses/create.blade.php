@@ -42,12 +42,12 @@
         <div class="grid gap-5 sm:grid-cols-3">
             <div>
                 <label class="text-sm font-medium" for="minimum_payment">Pago minimo</label>
-                <input id="minimum_payment" name="minimum_payment" type="number" step="0.01" min="0" value="{{ old('minimum_payment') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+                <input id="minimum_payment" name="minimum_payment" type="text" inputmode="decimal" data-money-input value="{{ old('minimum_payment') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('minimum_payment') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="text-sm font-medium" for="course_cost">Costo curso</label>
-                <input id="course_cost" name="course_cost" type="number" step="0.01" min="1" value="{{ old('course_cost') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+                <input id="course_cost" name="course_cost" type="text" inputmode="decimal" data-money-input value="{{ old('course_cost') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('course_cost') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>

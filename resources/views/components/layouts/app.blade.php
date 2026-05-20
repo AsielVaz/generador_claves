@@ -101,10 +101,8 @@
 
                 <footer class="@auth mt-8 @else fixed inset-x-0 bottom-0 px-5 pb-5 @endauth">
                     <div class="rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
-                        <span class="font-semibold">Cryptoefectivo</span>
-                        <span class="mx-2">-</span>
                         <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800">
-                            www.cryptoefectivo.com
+                            https://www.cryptoefectivo.com/
                         </a>
                     </div>
                 </footer>

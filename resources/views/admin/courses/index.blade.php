@@ -34,11 +34,7 @@
                                     <a href="{{ route('admin.courses.show', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Ver detalles</a>
                                     <a href="{{ route('admin.courses.edit', $course) }}" class="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-100">Editar</a>
                                     @if ($course->is_active)
-                                        <form method="POST" action="{{ route('admin.courses.archive', $course) }}" onsubmit="return confirm('¿Seguro que quieres archivar este curso? El curso dejara de estar activo.');">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button class="rounded-md border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Archivar curso</button>
-                                        </form>
+                                        <a href="{{ route('admin.courses.archive.confirm', $course) }}" class="rounded-md border border-red-200 px-3 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">Archivar curso</a>
                                     @endif
                                 </div>
                             </td>

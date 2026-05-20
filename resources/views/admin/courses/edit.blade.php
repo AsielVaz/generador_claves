@@ -17,12 +17,12 @@
 
         <div class="grid gap-5 sm:grid-cols-2">
             <div>
-                <label class="text-sm font-medium" for="start_date">Fecha inicio</label>
+                <label class="text-sm font-medium" for="start_date">Fecha inicio curso</label>
                 <input id="start_date" name="start_date" type="date" value="{{ old('start_date', optional($course->start_date)->format('Y-m-d')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('start_date') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label class="text-sm font-medium" for="end_date">Fecha fin</label>
+                <label class="text-sm font-medium" for="end_date">Fecha fin del curso</label>
                 <input id="end_date" name="end_date" type="date" value="{{ old('end_date', optional($course->end_date)->format('Y-m-d')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('end_date') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
@@ -30,12 +30,12 @@
 
         <div class="grid gap-5 sm:grid-cols-2">
             <div>
-                <label class="text-sm font-medium" for="payment_start_date">Fecha inicio pago</label>
+                <label class="text-sm font-medium" for="payment_start_date">Fecha inicio inscripcion</label>
                 <input id="payment_start_date" name="payment_start_date" type="date" value="{{ old('payment_start_date', optional($course->payment_start_date)->format('Y-m-d')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('payment_start_date') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
-                <label class="text-sm font-medium" for="payment_end_date">Fecha fin pago</label>
+                <label class="text-sm font-medium" for="payment_end_date">Ultimo dia para finiquitar el curso</label>
                 <input id="payment_end_date" name="payment_end_date" type="date" value="{{ old('payment_end_date', optional($course->payment_end_date)->format('Y-m-d')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('payment_end_date') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
@@ -44,12 +44,12 @@
         <div class="grid gap-5 sm:grid-cols-3">
             <div>
                 <label class="text-sm font-medium" for="minimum_payment">Pago minimo</label>
-                <input id="minimum_payment" name="minimum_payment" type="number" step="0.01" min="0" value="{{ old('minimum_payment', $course->minimum_payment) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+                <input id="minimum_payment" name="minimum_payment" type="text" inputmode="decimal" data-money-input value="{{ old('minimum_payment', number_format((float) $course->minimum_payment, 2, '.', ',')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('minimum_payment') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label class="text-sm font-medium" for="course_cost">Costo curso</label>
-                <input id="course_cost" name="course_cost" type="number" step="0.01" min="1" value="{{ old('course_cost', $course->course_cost ?: $course->price) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+                <input id="course_cost" name="course_cost" type="text" inputmode="decimal" data-money-input value="{{ old('course_cost', number_format((float) ($course->course_cost ?: $course->price), 2, '.', ',')) }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
                 @error('course_cost') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
             <div>

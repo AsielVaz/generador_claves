@@ -8,6 +8,7 @@ use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
@@ -28,6 +29,11 @@ class AdminCourseController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $request->merge([
+            'minimum_payment' => $this->normalizeMoney($request->input('minimum_payment')),
+            'course_cost' => $this->normalizeMoney($request->input('course_cost')),
+        ]);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -95,6 +101,11 @@ class AdminCourseController extends Controller
 
     public function update(Request $request, Course $course): RedirectResponse
     {
+        $request->merge([
+            'minimum_payment' => $this->normalizeMoney($request->input('minimum_payment')),
+            'course_cost' => $this->normalizeMoney($request->input('course_cost')),
+        ]);
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
@@ -128,11 +139,52 @@ class AdminCourseController extends Controller
             ->with('status', 'Curso actualizado correctamente.');
     }
 
+    public function confirmArchive(Course $course): View
+    {
+        return view('admin.courses.archive', [
+            'course' => $course,
+            'refunds' => $this->refundRows($course),
+            'shouldRefund' => $this->shouldRefundArchivedCourse($course),
+        ]);
+    }
+
     public function archive(Course $course): RedirectResponse
     {
-        $course->update(['is_active' => false]);
+        if (! $course->is_active) {
+            return redirect()
+                ->route('admin.courses.index')
+                ->with('status', 'El curso ya estaba archivado.');
+        }
 
-        return back()->with('status', 'Curso archivado correctamente.');
+        $refunds = $this->shouldRefundArchivedCourse($course)
+            ? $this->refundRows($course)
+            : collect();
+
+        DB::transaction(function () use ($course, $refunds) {
+            foreach ($refunds as $refund) {
+                Payment::create([
+                    'user_id' => $refund['user']->id,
+                    'course_id' => null,
+                    'type' => Payment::TYPE_WALLET_CREDIT,
+                    'amount' => $refund['amount'],
+                    'method' => 'reembolso',
+                    'status' => 'paid',
+                    'reference' => 'Reembolso por curso '.$course->title,
+                    'unica' => 'refund_'.$course->id.'_'.$refund['user']->id.'_'.str_replace('.', '', uniqid('', true)),
+                    'paid_at' => now(),
+                ]);
+            }
+
+            $course->update(['is_active' => false]);
+        });
+
+        $message = $refunds->isEmpty()
+            ? 'Curso archivado correctamente.'
+            : 'Curso archivado correctamente. Se procesaron '.$refunds->count().' reembolsos.';
+
+        return redirect()
+            ->route('admin.courses.index')
+            ->with('status', $message);
     }
 
     private function enrollmentRows(Course $course): Collection
@@ -154,5 +206,38 @@ class AdminCourseController extends Controller
                 'status' => $paidTotal >= $courseCost ? 'Pagado' : 'Pendiente',
             ];
         });
+    }
+
+    private function shouldRefundArchivedCourse(Course $course): bool
+    {
+        return $course->end_date && now()->toDateString() < $course->end_date->toDateString();
+    }
+
+    private function refundRows(Course $course): Collection
+    {
+        if (! $this->shouldRefundArchivedCourse($course)) {
+            return collect();
+        }
+
+        return $course->payments()
+            ->where('type', Payment::TYPE_COURSE_PAYMENT)
+            ->where('status', 'paid')
+            ->where('is_condoned', false)
+            ->with('user')
+            ->select('user_id', DB::raw('SUM(amount) as amount'))
+            ->groupBy('user_id')
+            ->get()
+            ->filter(fn ($payment) => (float) $payment->amount > 0 && $payment->user)
+            ->map(fn ($payment) => [
+                'user' => $payment->user,
+                'amount' => (float) $payment->amount,
+                'reference' => 'Reembolso por curso '.$course->title,
+            ])
+            ->values();
+    }
+
+    private function normalizeMoney(?string $value): ?string
+    {
+        return $value === null ? null : str_replace(',', '', $value);
     }
 }

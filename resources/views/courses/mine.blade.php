@@ -52,7 +52,7 @@
                                 @csrf
                                 <div>
                                     <label for="amount_{{ $course->id }}" class="text-xs font-semibold text-zinc-500">Monto a pagar</label>
-                                    <input id="amount_{{ $course->id }}" name="amount" type="number" step="0.01" min="1" max="{{ number_format($maxWalletPayment, 2, '.', '') }}" value="{{ old('amount', number_format(max(1, $maxWalletPayment), 2, '.', '')) }}" @disabled($maxWalletPayment < 1) class="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-zinc-100">
+                                    <input id="amount_{{ $course->id }}" name="amount" type="text" inputmode="decimal" data-money-input data-money-max="{{ number_format($maxWalletPayment, 2, '.', '') }}" value="{{ old('amount', number_format(max(1, $maxWalletPayment), 2, '.', ',')) }}" @disabled($maxWalletPayment < 1) class="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100 disabled:bg-zinc-100">
                                     <p class="mt-1 text-xs text-zinc-500">Max. ${{ number_format($maxWalletPayment, 2) }}</p>
                                 </div>
                                 <button @disabled($maxWalletPayment < 1) class="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-zinc-300 disabled:text-zinc-500">Pagar curso</button>

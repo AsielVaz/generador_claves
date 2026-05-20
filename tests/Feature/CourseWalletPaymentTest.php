@@ -29,7 +29,7 @@ class CourseWalletPaymentTest extends TestCase
         $user->payments()->create([
             'course_id' => null,
             'type' => Payment::TYPE_WALLET_CREDIT,
-            'amount' => 500,
+            'amount' => 2500,
             'method' => 'Tarjeta',
             'status' => 'paid',
             'reference' => 'Credito de prueba',
@@ -38,7 +38,7 @@ class CourseWalletPaymentTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->post(route('courses.pay', $course), [
-            'amount' => 250,
+            'amount' => '1,000.00',
         ]);
 
         $response->assertRedirect();
@@ -47,10 +47,10 @@ class CourseWalletPaymentTest extends TestCase
             'user_id' => $user->id,
             'course_id' => $course->id,
             'type' => Payment::TYPE_COURSE_PAYMENT,
-            'amount' => 250,
+            'amount' => 1000,
             'method' => 'cartera',
             'status' => 'paid',
         ]);
-        $this->assertSame(250.0, $user->fresh()->walletBalance());
+        $this->assertSame(1500.0, $user->fresh()->walletBalance());
     }
 }
