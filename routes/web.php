@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CondonationController;
+use App\Http\Controllers\Admin\WalletCreditController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
@@ -60,6 +61,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/condonaciones', [CondonationController::class, 'index'])->name('condonations.index');
         Route::post('/condonaciones', [CondonationController::class, 'store'])->name('condonations.store');
+
+        Route::get('/saldos-cartera', [WalletCreditController::class, 'index'])->name('wallet-credits.index');
 
         Route::get('/reportes', [AdminReportController::class, 'index'])->name('reports.index');
     });

@@ -40,6 +40,7 @@
                         @else
                             <a href="{{ route('admin.users.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Usuarios</a>
                             <a href="{{ route('admin.courses.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Cursos admin</a>
+                            <a href="{{ route('admin.wallet-credits.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.wallet-credits.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Saldos cartera</a>
                             <a href="{{ route('admin.condonations.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.condonations.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Condonaciones</a>
                             <a href="{{ route('admin.reports.index') }}" class="rounded-md px-3 py-2 text-sm font-medium {{ request()->routeIs('admin.reports.*') ? 'bg-zinc-950 text-white' : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950' }}">Reportes</a>
                         @endif
