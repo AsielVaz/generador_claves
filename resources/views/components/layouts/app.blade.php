@@ -103,13 +103,13 @@
                 {{ $slot }}
 
                 <footer class="@auth mt-8 @else fixed inset-x-0 bottom-0 px-5 pb-5 @endauth">
-                    <div class="relative min-h-[104px] rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
+                    <div class="relative min-h-[76px] rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
                         <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800">
                             www.cryptoefectivo.com
                         </a>
                         <div class="mt-3 flex items-center justify-center gap-3 opacity-55 sm:absolute sm:right-5 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2 sm:justify-end">
-                            <img src="{{ asset('edw.png') }}" alt="EDW" class="h-[72px] w-auto object-contain">
-                            <img src="{{ asset('imet.png') }}" alt="IMET" class="h-[72px] w-auto object-contain">
+                            <img src="{{ asset('edw.png') }}" alt="EDW" class="h-10 w-auto object-contain">
+                            <img src="{{ asset('imet.png') }}" alt="IMET" class="h-10 w-auto object-contain">
                         </div>
                     </div>
                 </footer>
