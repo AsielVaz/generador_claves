@@ -103,13 +103,13 @@
                 {{ $slot }}
 
                 <footer class="@auth mt-8 @else fixed inset-x-0 bottom-0 px-5 pb-5 @endauth">
-                    <div class="relative min-h-[76px] rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm">
-                        <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800">
+                    <div class="relative rounded-lg border border-zinc-200 bg-white px-5 py-4 text-center text-sm text-zinc-600 shadow-sm" style="position: relative; min-height: 76px; padding: 16px 20px; text-align: center; overflow: hidden;">
+                        <a href="https://www.cryptoefectivo.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-emerald-700 hover:text-emerald-800" style="font-weight: 600; color: #047857;">
                             www.cryptoefectivo.com
                         </a>
-                        <div class="mt-3 flex items-center justify-center gap-3 opacity-55 sm:absolute sm:right-5 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2 sm:justify-end">
-                            <img src="{{ asset('edw.png') }}" alt="EDW" class="h-10 w-auto object-contain">
-                            <img src="{{ asset('imet.png') }}" alt="IMET" class="h-10 w-auto object-contain">
+                        <div class="mt-3 flex items-center justify-center gap-3 opacity-55 sm:absolute sm:right-5 sm:top-1/2 sm:mt-0 sm:-translate-y-1/2 sm:justify-end" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; opacity: 0.55; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); margin-top: 0;">
+                            <img src="{{ asset('edw.png') }}" alt="EDW" class="h-10 w-auto object-contain" style="height: 40px; width: auto; object-fit: contain; display: block;">
+                            <img src="{{ asset('imet.png') }}" alt="IMET" class="h-10 w-auto object-contain" style="height: 40px; width: auto; object-fit: contain; display: block;">
                         </div>
                     </div>
                 </footer>
