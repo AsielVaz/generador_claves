@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         User::updateOrCreate(
             ['email' => 'admin@admin'],
-            ['name' => 'Administrador', 'password' => 'admin', 'is_admin' => true],
+            ['name' => 'Administrador', 'password' => 'CelinaRifa2026', 'is_admin' => true],
         );
 
         $this->call(CourseSeeder::class);
