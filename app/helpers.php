@@ -6,7 +6,8 @@ if (! function_exists('enviarMailChimpCorreo')) {
     function enviarMailChimpCorreo($email, $nombre, $asunto, $mensaje, $attachment = [], $attachment_name = [], $mail_oculto = [], $correo_origen = '')
     {
         $apiKey = env('KEY_MAIL');
-        $correo_origen = $correo_origen ?: 'demo@sistema14.org';
+        $correo_origen = 'no-reply@cryptoefectivo.com';
+        $nombre_origen = 'CryptoEfectivo';
 
         if (empty($apiKey)) {
             Log::warning('No se pudo enviar correo: KEY_MAIL no esta configurada.');
@@ -47,6 +48,7 @@ if (! function_exists('enviarMailChimpCorreo')) {
             'key' => $apiKey,
             'message' => [
                 'from_email' => $correo_origen,
+                'from_name' => $nombre_origen,
                 'to' => $to,
                 'subject' => $asunto,
                 'html' => $mensaje,
@@ -96,6 +98,6 @@ if (! function_exists('enviarCorreoBienvenida')) {
             $mensaje,
         );
 
-        return enviarMailChimpCorreo($email, $nombre, $asunto, $mensaje, [], [], [], 'demo@sistema14.org');
+        return enviarMailChimpCorreo($email, $nombre, $asunto, $mensaje);
     }
 }
