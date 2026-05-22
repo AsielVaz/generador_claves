@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
@@ -28,16 +27,16 @@ class AdminUserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email_local' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9._%+-]+$/'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', Password::min(5)],
             'is_admin' => ['nullable', 'boolean'],
         ]);
 
-        $email = Str::lower($validated['email_local']).'@gmail.com';
+        $email = strtolower($validated['email']);
 
         if (User::where('email', $email)->exists()) {
             return back()
-                ->withErrors(['email_local' => 'Este correo ya esta registrado.'])
+                ->withErrors(['email' => 'Este correo ya esta registrado.'])
                 ->withInput();
         }
 

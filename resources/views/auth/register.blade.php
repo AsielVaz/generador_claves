@@ -6,7 +6,7 @@
                     <img src="{{ asset('logo.svg') }}" alt="CryptoEfectivo" class="h-full w-full object-contain">
                 </div>
                 <h1 class="mt-5 text-center text-2xl font-semibold">Crear cuenta</h1>
-                <p class="mt-2 text-center text-sm text-zinc-500">Registrate en CryptoEfectivo con tu cuenta Gmail.</p>
+                <p class="mt-2 text-center text-sm text-zinc-500">Registrate en CryptoEfectivo con tu correo.</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-5">
@@ -18,12 +18,9 @@
                 </div>
 
                 <div>
-                    <label for="email_local" class="text-sm font-medium">Correo Gmail</label>
-                    <div class="mt-2 flex rounded-md border border-zinc-300 bg-white focus-within:border-emerald-700 focus-within:ring-2 focus-within:ring-emerald-100">
-                        <input id="email_local" name="email_local" type="text" value="{{ old('email_local') }}" required class="min-w-0 flex-1 rounded-l-md px-3 py-2 text-sm outline-none" pattern="[A-Za-z0-9._%+-]+" autocomplete="username">
-                        <span class="shrink-0 border-l border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-600">@gmail.com</span>
-                    </div>
-                    @error('email_local') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+                    <label for="email" class="text-sm font-medium">Correo</label>
+                    <input id="email" name="email" type="email" value="{{ old('email') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-100" autocomplete="username">
+                    @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <div>

@@ -7,12 +7,9 @@
             @error('name') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
         <div>
-            <label class="text-sm font-medium" for="email_local">Correo Gmail</label>
-            <div class="mt-2 flex rounded-md border border-zinc-300 bg-white">
-                <input id="email_local" name="email_local" value="{{ old('email_local') }}" required pattern="[A-Za-z0-9._%+-]+" class="min-w-0 flex-1 rounded-l-md px-3 py-2 text-sm outline-none">
-                <span class="shrink-0 border-l border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-600">@gmail.com</span>
-            </div>
-            @error('email_local') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
+            <label class="text-sm font-medium" for="email">Correo</label>
+            <input id="email" name="email" type="email" value="{{ old('email') }}" required class="mt-2 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm">
+            @error('email') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
         <div>
             <label class="text-sm font-medium" for="password">Contrasena</label>

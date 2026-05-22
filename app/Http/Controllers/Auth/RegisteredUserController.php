@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
@@ -22,15 +21,15 @@ class RegisteredUserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email_local' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9._%+-]+$/'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
-        $email = Str::lower($validated['email_local']).'@gmail.com';
+        $email = strtolower($validated['email']);
 
         if (User::where('email', $email)->exists()) {
             return back()
-                ->withErrors(['email_local' => 'Este correo ya esta registrado.'])
+                ->withErrors(['email' => 'Este correo ya esta registrado.'])
                 ->withInput();
         }
 
