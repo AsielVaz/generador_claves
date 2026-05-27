@@ -47,6 +47,13 @@
                     </div>
                 @endif
 
+                @if (session('espiral_api_error'))
+                    <div class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" style="border-radius: 6px; border: 1px solid #fecaca; background: rgba(254, 242, 242, 0.92); padding: 12px 16px; color: #991b1b;">
+                        <p class="font-semibold" style="margin: 0 0 8px; font-weight: 700;">Detalle tecnico de Espiral</p>
+                        <pre style="margin: 0; max-height: 360px; overflow: auto; white-space: pre-wrap; word-break: break-word; font-size: 12px; line-height: 1.5;">{{ session('espiral_api_error') }}</pre>
+                    </div>
+                @endif
+
                 <div>
                     <label for="amount" class="block text-sm font-medium text-zinc-700">Monto a abonar</label>
                     <input id="amount" name="amount" type="text" inputmode="decimal" data-money-input value="{{ old('amount') }}" class="mt-1 w-full rounded-md border border-zinc-300 bg-white/80 px-3 py-2 text-sm shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200" style="margin-top: 4px; width: 100%; box-sizing: border-box; border-radius: 6px; border: 1px solid rgba(212, 212, 216, 0.95); background: rgba(255, 255, 255, 0.82); padding: 10px 12px; font-size: 14px; box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);" placeholder="1.00" required>

@@ -100,6 +100,7 @@ class EspiralPaymentController extends Controller
 
             return back()
                 ->withErrors(['espiral' => 'No se pudo conectar con Espiral. Intentalo nuevamente.'])
+                ->with('espiral_api_error', $exception->getMessage())
                 ->withInput();
         }
 
@@ -128,6 +129,7 @@ class EspiralPaymentController extends Controller
 
             return back()
                 ->withErrors(['espiral' => $errorMessage])
+                ->with('espiral_api_error', $this->formatEspiralErrorDetails($response, $body))
                 ->withInput();
         }
 
@@ -313,6 +315,26 @@ class EspiralPaymentController extends Controller
         }
 
         return $baseUrl.'/'.ltrim($value, '/');
+    }
+
+    private function formatEspiralErrorDetails($response, mixed $body): string
+    {
+        $contentType = $response->header('Content-Type') ?: 'Sin Content-Type';
+        $rawBody = $response->body();
+        $responseBody = is_array($body)
+            ? json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            : $rawBody;
+
+        if (! is_string($responseBody) || trim($responseBody) === '') {
+            $responseBody = 'Sin cuerpo de respuesta.';
+        }
+
+        return trim(implode("\n\n", [
+            'HTTP status: '.$response->status(),
+            'Content-Type: '.$contentType,
+            'Respuesta de Espiral:',
+            Str::limit($responseBody, 5000, "\n... respuesta truncada ..."),
+        ]));
     }
 
     private function cleanMoney(mixed $value): string
