@@ -321,6 +321,11 @@ class EspiralPaymentController extends Controller
     {
         $contentType = $response->header('Content-Type') ?: 'Sin Content-Type';
         $rawBody = $response->body();
+
+        if ($response->status() === 403 && Str::contains($rawBody, 'Cloudflare')) {
+            return $this->formatCloudflareBlockDetails($response);
+        }
+
         $responseBody = is_array($body)
             ? json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
             : $rawBody;
@@ -335,6 +340,22 @@ class EspiralPaymentController extends Controller
             'Respuesta de Espiral:',
             Str::limit($responseBody, 5000, "\n... respuesta truncada ..."),
         ]));
+    }
+
+    private function formatCloudflareBlockDetails($response): string
+    {
+        $body = $response->body();
+        preg_match('/Cloudflare Ray ID:\s*<strong[^>]*>([^<]+)<\/strong>/i', $body, $rayIdMatch);
+        preg_match('/<span class="hidden" id="cf-footer-ip">([^<]+)<\/span>/i', $body, $ipMatch);
+
+        return trim(implode("\n", array_filter([
+            'HTTP status: '.$response->status(),
+            'Content-Type: '.($response->header('Content-Type') ?: 'Sin Content-Type'),
+            'Cloudflare bloqueo la solicitud antes de que llegara al API de Espiral.',
+            isset($rayIdMatch[1]) ? 'Cloudflare Ray ID: '.$rayIdMatch[1] : null,
+            isset($ipMatch[1]) ? 'IP del servidor bloqueada: '.$ipMatch[1] : null,
+            'Accion requerida: solicita a Espiral que permita esta IP/Ray ID para el endpoint de creacion de lineas de pago.',
+        ])));
     }
 
     private function cleanMoney(mixed $value): string
