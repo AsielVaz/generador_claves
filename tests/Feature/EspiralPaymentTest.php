@@ -54,6 +54,11 @@ class EspiralPaymentTest extends TestCase
 
         Http::assertSent(fn ($request) => str_contains($request->url(), '/payOrder?key=test-key')
             && $request['transaction']['total'] === 1250.50
+            && str_starts_with($request['linkDetails']['name'], 'link - ')
+            && $request['linkDetails']['email'] === ''
+            && $request['linkDetails']['reusable'] === true
+            && $request['linkDetails']['enableReference'] === true
+            && $request['linkDetails']['securityType3D'] === true
             && $request['metadata']['user_id'] === $user->id);
     }
 

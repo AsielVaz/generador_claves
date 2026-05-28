@@ -242,9 +242,10 @@ class EspiralPaymentController extends Controller
                 'currency' => 'MXN',
             ],
             'linkDetails' => [
-                'name' => 'CryptoEfectivo '.$payment->unica,
-                'email' => $user->email,
-                'reusable' => false,
+                'name' => 'link - '.now()->valueOf(),
+                'email' => '',
+                'reusable' => true,
+                'enableReference' => true,
                 'securityType3D' => true,
             ],
             'webhook' => [
