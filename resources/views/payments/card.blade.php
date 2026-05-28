@@ -38,7 +38,7 @@
         </section>
 
         <section class="rounded-lg border border-white/70 bg-white/75 p-5 shadow-sm backdrop-blur" style="border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.7); background: rgba(255, 255, 255, 0.75); padding: 20px; box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08); backdrop-filter: blur(18px);">
-            <form method="POST" action="{{ route('payments.card.store') }}" target="_blank" class="grid gap-4" style="display: grid; gap: 16px;">
+            <form method="POST" action="{{ route('payments.card.store') }}" class="grid gap-4" style="display: grid; gap: 16px;">
                 @csrf
 
                 @if ($errors->has('espiral'))
