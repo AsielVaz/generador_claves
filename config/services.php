@@ -28,9 +28,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    'espiral' => [
-        'key' => env('ESPIRAL_KEY'),
-        'base_url' => env('ESPIRAL_BASE_URL', 'https://cart.espiralapp.com'),
+    'paypal' => [
+        'client' => env('PAYPAL_CLIENT'),
+        'secret' => env('PAYPAL_SECRET'),
+        'base_url' => env('PAYPAL_BASE_URL', 'https://api-m.sandbox.paypal.com'),
     ],
 
     'slack' => [

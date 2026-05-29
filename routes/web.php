@@ -10,8 +10,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EspiralPaymentController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PayPalPaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,9 +19,6 @@ Route::get('/', function () {
         ? redirect()->route('dashboard')
         : redirect()->route('login');
 });
-
-Route::post('/webhooks/espiral/{reference?}', [EspiralPaymentController::class, 'webhook'])
-    ->name('webhooks.espiral');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -41,10 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/cursos/{course}/registro', [CourseController::class, 'enroll'])->name('courses.enroll');
 
     Route::get('/pagos', [PaymentController::class, 'index'])->name('payments.index');
-    Route::get('/pagos/tarjeta', [EspiralPaymentController::class, 'create'])->name('payments.card.create');
-    Route::post('/pagos/tarjeta', [EspiralPaymentController::class, 'store'])->name('payments.card.store');
-    Route::get('/pagos/tarjeta/{reference}/exito', [EspiralPaymentController::class, 'success'])->name('payments.card.success');
-    Route::get('/pagos/tarjeta/{reference}/error', [EspiralPaymentController::class, 'error'])->name('payments.card.error');
+    Route::get('/pagos/tarjeta', [PayPalPaymentController::class, 'create'])->name('payments.card.create');
+    Route::post('/pagos/tarjeta', [PayPalPaymentController::class, 'store'])->name('payments.card.store');
+    Route::get('/pagos/tarjeta/{reference}/exito', [PayPalPaymentController::class, 'success'])->name('payments.card.success');
+    Route::get('/pagos/tarjeta/{reference}/cancelado', [PayPalPaymentController::class, 'cancel'])->name('payments.card.cancel');
     Route::get('/pagos/nuevo', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/pagos/previsualizar', [PaymentController::class, 'preview'])->name('payments.preview');
     Route::post('/pagos', [PaymentController::class, 'store'])->name('payments.store');
