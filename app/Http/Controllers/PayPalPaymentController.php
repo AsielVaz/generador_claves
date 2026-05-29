@@ -252,15 +252,15 @@ class PayPalPaymentController extends Controller
     {
         $responseBody = is_array($body)
             ? json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
-            : $response['body'];
+            : $this->responseBody($response);
 
         if (! is_string($responseBody) || trim($responseBody) === '') {
             $responseBody = 'Sin cuerpo de respuesta.';
         }
 
         $sections = [
-            'HTTP status: '.$response['status'],
-            'Content-Type: '.($response['headers']['content-type'] ?? 'Sin Content-Type'),
+            'HTTP status: '.$this->responseStatus($response),
+            'Content-Type: '.$this->responseHeader($response, 'content-type'),
             'Respuesta de PayPal:',
             Str::limit($responseBody, 5000, "\n... respuesta truncada ..."),
         ];
@@ -279,7 +279,46 @@ class PayPalPaymentController extends Controller
 
     private function baseUrl(): string
     {
-        return rtrim((string) config('services.paypal.base_url'), '/');
+        $configuredUrl = config('services.paypal.base_url');
+
+        if ($configuredUrl) {
+            return rtrim((string) $configuredUrl, '/');
+        }
+
+        return config('services.paypal.mode') === 'live'
+            ? 'https://api-m.paypal.com'
+            : 'https://api-m.sandbox.paypal.com';
+    }
+
+    private function responseStatus($response): int|string
+    {
+        if (is_array($response)) {
+            return $response['status'] ?? 'Sin status';
+        }
+
+        return method_exists($response, 'status') ? $response->status() : 'Sin status';
+    }
+
+    private function responseHeader($response, string $header): string
+    {
+        if (is_array($response)) {
+            return $response['headers'][Str::lower($header)] ?? 'Sin Content-Type';
+        }
+
+        if (method_exists($response, 'header')) {
+            return $response->header($header) ?: 'Sin Content-Type';
+        }
+
+        return 'Sin Content-Type';
+    }
+
+    private function responseBody($response): string
+    {
+        if (is_array($response)) {
+            return (string) ($response['body'] ?? '');
+        }
+
+        return method_exists($response, 'body') ? $response->body() : '';
     }
 
     private function paypalJsonRequest(string $method, string $path, string $token, ?array $payload = null): array

@@ -31,7 +31,8 @@ return [
     'paypal' => [
         'client' => env('PAYPAL_CLIENT'),
         'secret' => env('PAYPAL_SECRET'),
-        'base_url' => env('PAYPAL_BASE_URL', 'https://api-m.sandbox.paypal.com'),
+        'mode' => env('PAYPAL_MODE', 'sandbox'),
+        'base_url' => env('PAYPAL_BASE_URL'),
     ],
 
     'slack' => [

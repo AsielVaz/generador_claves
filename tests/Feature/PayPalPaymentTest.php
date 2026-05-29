@@ -112,6 +112,40 @@ class PayPalPaymentTest extends TestCase
         $this->assertSame(300.0, $user->fresh()->walletBalance());
     }
 
+    public function test_paypal_live_mode_uses_live_api_base_url(): void
+    {
+        config([
+            'services.paypal.client' => 'live-client',
+            'services.paypal.secret' => 'live-secret',
+            'services.paypal.mode' => 'live',
+            'services.paypal.base_url' => null,
+        ]);
+
+        Http::fake([
+            'api-m.paypal.com/v1/oauth2/token' => Http::response([
+                'access_token' => 'live-token',
+                'token_type' => 'Bearer',
+            ]),
+            'api-m.paypal.com/v2/checkout/orders' => Http::response([
+                'id' => 'LIVE-ORDER-123',
+                'status' => 'CREATED',
+                'links' => [
+                    [
+                        'href' => 'https://www.paypal.com/checkoutnow?token=LIVE-ORDER-123',
+                        'rel' => 'approve',
+                        'method' => 'GET',
+                    ],
+                ],
+            ], 201),
+        ]);
+
+        $response = $this->actingAs(User::factory()->create())->post(route('payments.card.store'), [
+            'amount' => '500.00',
+        ]);
+
+        $response->assertRedirect('https://www.paypal.com/checkoutnow?token=LIVE-ORDER-123');
+    }
+
     private function configurePayPal(): void
     {
         config([
