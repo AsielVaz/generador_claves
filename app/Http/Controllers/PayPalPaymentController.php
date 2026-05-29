@@ -65,16 +65,13 @@ class PayPalPaymentController extends Controller
                 ->withInput();
         }
 
-        $response = Http::withToken($token)
-            ->acceptJson()
-            ->asJson()
-            ->timeout(20)
-            ->post($this->baseUrl().'/v2/checkout/orders', $this->buildOrderPayload($payment));
+        $payload = $this->buildOrderPayload($payment);
 
-        $body = $response->json();
+        $response = $this->paypalJsonRequest('POST', '/v2/checkout/orders', $token, $payload);
+        $body = $response['json'];
         $approvalUrl = is_array($body) ? $this->approvalUrlFromResponse($body) : null;
 
-        if (! $response->successful() || ! $approvalUrl) {
+        if (! $response['successful'] || ! $approvalUrl) {
             $payment->update([
                 'status' => 'error',
                 'reference' => 'PayPal no genero la orden',
@@ -82,13 +79,14 @@ class PayPalPaymentController extends Controller
 
             Log::warning('PayPal order could not be generated.', [
                 'payment_id' => $payment->id,
-                'status' => $response->status(),
-                'response' => $body ?? $response->body(),
+                'status' => $response['status'],
+                'request' => $payload,
+                'response' => $body ?? $response['body'],
             ]);
 
             return back()
                 ->withErrors(['paypal' => 'PayPal no genero la orden de pago. Revisa los datos e intentalo nuevamente.'])
-                ->with('paypal_api_error', $this->formatPayPalErrorDetails($response, $body))
+                ->with('paypal_api_error', $this->formatPayPalErrorDetails($response, $body, $payload))
                 ->withInput();
         }
 
@@ -130,17 +128,12 @@ class PayPalPaymentController extends Controller
                 ->with('paypal_api_error', session('paypal_api_error'));
         }
 
-        $response = Http::withToken($token)
-            ->acceptJson()
-            ->asJson()
-            ->timeout(20)
-            ->post($this->baseUrl().'/v2/checkout/orders/'.$orderId.'/capture');
-
-        $body = $response->json();
+        $response = $this->paypalJsonRequest('POST', '/v2/checkout/orders/'.$orderId.'/capture', $token);
+        $body = $response['json'];
         $captureStatus = data_get($body, 'status');
         $captureId = data_get($body, 'purchase_units.0.payments.captures.0.id', $orderId);
 
-        if ($response->successful() && $captureStatus === 'COMPLETED') {
+        if ($response['successful'] && $captureStatus === 'COMPLETED') {
             $payment->update([
                 'status' => 'paid',
                 'method' => 'PayPal Sandbox',
@@ -161,8 +154,8 @@ class PayPalPaymentController extends Controller
         Log::warning('PayPal order could not be captured.', [
             'payment_id' => $payment->id,
             'order_id' => $orderId,
-            'status' => $response->status(),
-            'response' => $body ?? $response->body(),
+            'status' => $response['status'],
+            'response' => $body ?? $response['body'],
         ]);
 
         return redirect()
@@ -255,22 +248,33 @@ class PayPalPaymentController extends Controller
         return null;
     }
 
-    private function formatPayPalErrorDetails($response, mixed $body): string
+    private function formatPayPalErrorDetails($response, mixed $body, ?array $requestPayload = null): string
     {
         $responseBody = is_array($body)
             ? json_encode($body, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
-            : $response->body();
+            : $response['body'];
 
         if (! is_string($responseBody) || trim($responseBody) === '') {
             $responseBody = 'Sin cuerpo de respuesta.';
         }
 
-        return trim(implode("\n\n", [
-            'HTTP status: '.$response->status(),
-            'Content-Type: '.($response->header('Content-Type') ?: 'Sin Content-Type'),
+        $sections = [
+            'HTTP status: '.$response['status'],
+            'Content-Type: '.($response['headers']['content-type'] ?? 'Sin Content-Type'),
             'Respuesta de PayPal:',
             Str::limit($responseBody, 5000, "\n... respuesta truncada ..."),
-        ]));
+        ];
+
+        if ($requestPayload) {
+            $sections[] = 'JSON enviado a PayPal:';
+            $sections[] = Str::limit(
+                $this->payloadToJson($requestPayload, true),
+                5000,
+                "\n... request truncado ..."
+            );
+        }
+
+        return trim(implode("\n\n", $sections));
     }
 
     private function baseUrl(): string
@@ -278,8 +282,113 @@ class PayPalPaymentController extends Controller
         return rtrim((string) config('services.paypal.base_url'), '/');
     }
 
+    private function paypalJsonRequest(string $method, string $path, string $token, ?array $payload = null): array
+    {
+        $url = $this->baseUrl().$path;
+
+        if (app()->runningUnitTests()) {
+            $request = Http::withToken($token)
+                ->acceptJson()
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Prefer' => 'return=representation',
+                ])
+                ->timeout(20);
+
+            $response = $payload === null
+                ? $request->send($method, $url)
+                : $request->send($method, $url, ['body' => $this->payloadToJson($payload)]);
+
+            return [
+                'status' => $response->status(),
+                'headers' => collect($response->headers())->mapWithKeys(fn ($value, $key) => [Str::lower($key) => $value[0] ?? null])->all(),
+                'body' => $response->body(),
+                'json' => $response->json(),
+                'successful' => $response->successful(),
+            ];
+        }
+
+        $headers = [
+            'Authorization: Bearer '.$token,
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'Prefer: return=representation',
+        ];
+
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_TIMEOUT => 20,
+        ]);
+
+        if ($payload !== null) {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $this->payloadToJson($payload));
+        }
+
+        $rawResponse = curl_exec($curl);
+
+        if ($rawResponse === false) {
+            $error = curl_error($curl);
+            curl_close($curl);
+
+            return [
+                'status' => 0,
+                'headers' => [],
+                'body' => $error ?: 'Error desconocido de cURL.',
+                'json' => null,
+                'successful' => false,
+            ];
+        }
+
+        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $status = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        curl_close($curl);
+
+        $rawHeaders = substr($rawResponse, 0, $headerSize);
+        $body = substr($rawResponse, $headerSize);
+        $decoded = json_decode($body, true);
+
+        return [
+            'status' => $status,
+            'headers' => $this->parseHeaders($rawHeaders),
+            'body' => $body,
+            'json' => is_array($decoded) ? $decoded : null,
+            'successful' => $status >= 200 && $status < 300,
+        ];
+    }
+
+    private function parseHeaders(string $rawHeaders): array
+    {
+        $headers = [];
+
+        foreach (explode("\r\n", trim($rawHeaders)) as $line) {
+            if (! str_contains($line, ':')) {
+                continue;
+            }
+
+            [$key, $value] = explode(':', $line, 2);
+            $headers[Str::lower(trim($key))] = trim($value);
+        }
+
+        return $headers;
+    }
+
     private function cleanMoney(mixed $value): string
     {
         return preg_replace('/[^\d.]/', '', str_replace(',', '', (string) $value)) ?: '';
+    }
+
+    private function payloadToJson(array $payload, bool $pretty = false): string
+    {
+        $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR;
+
+        if ($pretty) {
+            $flags |= JSON_PRETTY_PRINT;
+        }
+
+        return json_encode($payload, $flags);
     }
 }

@@ -55,7 +55,9 @@ class PayPalPaymentTest extends TestCase
         Http::assertSent(fn ($request) => $request->url() === 'https://api-m.sandbox.paypal.com/v2/checkout/orders'
             && $request['intent'] === 'CAPTURE'
             && $request['purchase_units'][0]['amount']['currency_code'] === 'MXN'
-            && $request['purchase_units'][0]['amount']['value'] === '1250.50');
+            && $request['purchase_units'][0]['amount']['value'] === '1250.50'
+            && $request['payment_source']['paypal']['experience_context']['brand_name'] === 'CryptoEfectivo'
+            && $request['payment_source']['paypal']['experience_context']['user_action'] === 'PAY_NOW');
     }
 
     public function test_paypal_return_captures_order_and_credits_wallet(): void
