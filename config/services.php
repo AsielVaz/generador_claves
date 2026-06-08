@@ -35,6 +35,11 @@ return [
         'base_url' => env('PAYPAL_BASE_URL'),
     ],
 
+    'espiral' => [
+        'key' => env('ESPIRAL_KEY'),
+        'base_url' => env('ESPIRAL_BASE_URL', 'https://cart.espiralapp.com'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

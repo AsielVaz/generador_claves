@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EspiralPaymentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayPalPaymentController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,9 @@ Route::get('/', function () {
         ? redirect()->route('dashboard')
         : redirect()->route('login');
 });
+
+Route::post('/webhooks/espiral/{reference?}', [EspiralPaymentController::class, 'webhook'])
+    ->name('webhooks.espiral');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -42,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/pagos/tarjeta', [PayPalPaymentController::class, 'store'])->name('payments.card.store');
     Route::get('/pagos/tarjeta/{reference}/exito', [PayPalPaymentController::class, 'success'])->name('payments.card.success');
     Route::get('/pagos/tarjeta/{reference}/cancelado', [PayPalPaymentController::class, 'cancel'])->name('payments.card.cancel');
+    Route::get('/pagos/efectivo', [EspiralPaymentController::class, 'create'])->name('payments.cash.create');
+    Route::post('/pagos/efectivo', [EspiralPaymentController::class, 'store'])->name('payments.cash.store');
+    Route::get('/pagos/efectivo/{reference}/exito', [EspiralPaymentController::class, 'success'])->name('payments.cash.success');
+    Route::get('/pagos/efectivo/{reference}/error', [EspiralPaymentController::class, 'error'])->name('payments.cash.error');
     Route::get('/pagos/nuevo', [PaymentController::class, 'create'])->name('payments.create');
     Route::post('/pagos/previsualizar', [PaymentController::class, 'preview'])->name('payments.preview');
     Route::post('/pagos', [PaymentController::class, 'store'])->name('payments.store');

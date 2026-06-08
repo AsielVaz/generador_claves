@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => EnsureUserIsAdmin::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/espiral',
+            'webhooks/espiral/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
